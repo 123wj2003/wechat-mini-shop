@@ -14,7 +14,7 @@ Page({
         calculate: null,
         cartList: [],
         cartIds: [],
-        addressId: [],
+        addressId: null,
         address: {},
         message: null,
         payState: false,

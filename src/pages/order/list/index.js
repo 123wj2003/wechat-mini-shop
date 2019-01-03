@@ -161,7 +161,7 @@ Page({
                     self.setData({
                         page: 1
                     })
-                    this.updateListRow(orderInfo.id)
+                    self.updateListRow(orderInfo.id)
                 },
                 'fail': function (res) {
                     fa.toast.show({

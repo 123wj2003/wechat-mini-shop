@@ -2,7 +2,7 @@ import regeneratorRuntime from 'libs/regenerator-runtime/runtime-module';
 import requestUtil from './utils/request'
 import exceptionUtil from './utils/exception'
 import Cache from './utils/cache'
-const host = 'https://demo.fashop.cn/'
+const host = 'https://v2-api.fashop.cn/'
 // const host = 'http://127.0.0.1:9510/'
 const api = {
     user: {
