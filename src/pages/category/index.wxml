@@ -16,7 +16,7 @@
             </aside>
             <aside>
                 <scroll-view scroll-y="true" scroll-with-animation="true"
-                             scroll-into-view="category_parents_{{style1.mainNavClickIndex}}" bindscroll="subNavScroll">
+                             scroll-into-view="category_parents_{{style1.mainNavClickIndex}}" >
                     <block wx:for="{{style1.categoryList}}" data-index="{{index}}" wx:key="item">
                         <section id="category_parents_{{index}}">
                             <block wx:for="{{item.childs}}" wx:key="sub" wx:for-item="sub">

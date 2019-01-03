@@ -12,7 +12,7 @@ App({
     async onLaunch() {
         // 防止token过期
         const existUserInfo = fa.cache.get('user_info')
-        if (typeof existUserInfo['id'] !== 'undefined') {
+        if (existUserInfo && typeof existUserInfo['id'] !== 'undefined') {
             await loginLogic.wechatLogin(false)
         }
         // 店铺配置信息

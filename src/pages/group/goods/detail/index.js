@@ -156,9 +156,7 @@ Page({
             return false
         } else {
             const inCartNumber = this.data.inCartNumber + this.data.stepper
-            if (!this.data.userInfo) {
-                this.login()
-            } else if (inCartNumber > goodsSkuInfo.stock) {
+            if (inCartNumber > goodsSkuInfo.stock) {
                 fa.toast.show({
                     title: '库存不足' // todo 加入到code
                 })
