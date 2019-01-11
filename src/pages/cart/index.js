@@ -180,8 +180,8 @@ Page({
                 if (cartList[i].checked === true) {
                     checkedCartIds.push(cartList[i].id)
                     checkedGoodsSkuInfoIds.push(cartList[i].goods_sku_id)
-                    // todo 多个float相加有bug 暂时想不通
-                    total += parseFloat(cartList[i].goods_price).toFixed(2) * cartList[i].goods_num
+
+                    total += parseFloat(cartList[i].goods_price) * cartList[i].goods_num
                     totalNum += cartList[i].goods_num
                 }
 
@@ -191,7 +191,7 @@ Page({
                     cartList[i]['remove_checked'] = false
                 }
             }
-            total = total.toFixed(2)
+            total = parseFloat(total.toFixed(2))
 
             this.setData({
                 cartListLoadedState: true,

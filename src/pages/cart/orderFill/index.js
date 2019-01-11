@@ -130,11 +130,13 @@ Page({
         if (result.list.length > 0) {
             const cartList = result.list
             for (let i = 0; i < cartList.length; i++) {
-                total += parseFloat(cartList[i].goods_price).toFixed(2) * cartList[i].goods_num
+                total += parseFloat(cartList[i].goods_price) * cartList[i].goods_num
                 cartList[i]['goods_spec_string'] = cartList[i].goods_spec.map(function (item) {
                     return `${item.name}:${item.value_name}`
                 })
             }
+            total = parseFloat(total.toFixed(2))
+
             this.setData({
                 checkedCartIds,
                 checkedGoodsSkuInfoIds,
