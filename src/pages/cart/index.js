@@ -120,11 +120,11 @@ Page({
                     self.setData({
                         userInfo: fa.cache.get('user_info')
                     })
+                    self.init()
                 }
             }
         })
-        await loginLogic.wechatLogin()
-        this.init()
+        loginLogic.wechatLogin()
     },
     async onPullDownRefresh() {
         await cartModel.list()

@@ -22,10 +22,9 @@ Page({
 
     },
     async onLoad() {
-        const areaCache =  fa.cache.get('area_list_level2')
-        const result = areaCache ? areaCache : await areaModel.list({ level: 2 })
+        const areaList = await areaModel.tree()
         this.setData({
-            areaList: result.list,
+            areaList,
             onLoaded: true
         })
     },

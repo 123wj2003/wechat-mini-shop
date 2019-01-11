@@ -23,8 +23,7 @@ Page({
         areaList: [],
     },
     async onLoad({ id }) {
-        const areaCache = fa.cache.get('area_list_level2')
-        const areaResult = areaCache ? areaCache : await areaModel.list({ level: 2 })
+        const areaList = await areaModel.tree()
         const info = await addressModel.info({ id })
         this.setData({
             id,
@@ -35,7 +34,7 @@ Page({
             address: info.address,
             is_default: info.is_default,
             combine_detail: info.combine_detail,
-            areaList: areaResult.list,
+            areaList,
             onLoaded: true
         })
     },

@@ -79,7 +79,7 @@ export default class Login {
         })
     }
 
-    // 注意：微信这个异步还不知道怎么写才能行的通  await无效
+    // TODO 注意：微信这个异步还不知道怎么写才能行的通  await无效
     async wechatLogin(autoRegister = true) {
         const self = this
         await wx.login({

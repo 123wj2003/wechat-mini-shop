@@ -20,9 +20,7 @@ App({
         if (result) {
             fa.cache.set('shop_info', result)
         }
-        // 地址预加载
-        areaModel.list({ level: 2 }).then(function (data) {
-            fa.cache.set('area_list_level2', data)
-        })
+        // 地址预缓存
+        areaModel.cache()
     }
 })

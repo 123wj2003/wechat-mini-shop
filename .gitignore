@@ -15,3 +15,4 @@ lerna-debug.log
 dist/
 project.config.json
 .idea/workspace.xml
+src/miniprogram_npm

@@ -24,8 +24,7 @@ Page({
 
     },
     async onLoad({ id }) {
-        const areaCache = fa.cache.get('area_list_level2')
-        const areaResult = areaCache ? areaCache : await areaModel.list({ level: 2 })
+        const areaList = await areaModel.tree()
         const info = await addressModel.info({ id })
         this.setData({
             id,
@@ -36,7 +35,7 @@ Page({
             address: info.address,
             is_default: info.is_default,
             combine_detail: info.combine_detail,
-            areaList: areaResult.list,
+            areaList,
             onLoaded: true
         })
     },
@@ -67,30 +66,30 @@ Page({
             is_default: e.detail.detail.checked ? 1 : 0
         })
     },
-    async onWechatAddressChoose(){
+    async onWechatAddressChoose() {
         const self = this
         wx.chooseAddress({
             success: async function (res) {
                 const result = await areaModel.info({
-                    name:res.countyName
+                    name: res.countyName
                 })
-                if(result !== false){
+                if (result !== false) {
                     self.setData({
-                        combine_detail:`${result.items[0].name} ${result.items[1].name} ${result.items[2].name}`,
-                        area_id:result.items[2].id,
-                        truename:res.userName,
-                        mobile_phone:res.telNumber,
-                        address:res.detailInfo,
+                        combine_detail: `${result.items[0].name} ${result.items[1].name} ${result.items[2].name}`,
+                        area_id: result.items[2].id,
+                        truename: res.userName,
+                        mobile_phone: res.telNumber,
+                        address: res.detailInfo,
                     })
-                }else{
+                } else {
                     fa.toast.show({
                         title: "微信数据未能匹配成功，请使用其他方式"
                     })
                 }
                 self.setData({
-                    truename:res.userName,
-                    mobile_phone:res.telNumber,
-                    address:res.detailInfo,
+                    truename: res.userName,
+                    mobile_phone: res.telNumber,
+                    address: res.detailInfo,
                 })
             }
         })
