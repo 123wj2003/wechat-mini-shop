@@ -108,7 +108,6 @@ Page({
         })
     },
     goGoodsDetail(e) {
-        console.log(e)
         wx.navigateTo({
             url: `/pages/goods/detail/index?id=${e.detail.goodsId}`
         })
@@ -159,7 +158,7 @@ Page({
             userInfo: user_info ? user_info : null,
             onLoaded: true
         })
-        if (fa.cache.get('user_info')) {
+        if (user_info) {
             await this.initCartList()
         }
     },
