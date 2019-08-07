@@ -4,7 +4,7 @@
             <view class="header">
                 <image src="https://ws4.sinaimg.cn/large/006tNc79ly1frmnce8ekrj302d02d749.jpg"
                        mode="aspectFit" />
-                <text>请设置登陆密码</text>
+                <text>请设置登录密码</text>
             </view>
             <view class="username input-item">
                 <input placeholder="请输入6~20位字符" auto-focus />

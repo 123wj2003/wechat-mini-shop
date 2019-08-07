@@ -1,7 +1,7 @@
 import fa from '@/utils/fa'
-import GoodsEvaluateModel from '@/models/goodsEvaluate'
-import OrderModel from '@/models/order'
-import "regenerator-runtime/runtime"
+import GoodsEvaluateModel from '@/model/goodsEvaluate'
+import OrderModel from '@/model/order'
+
 import { UploadImageInterface } from '@/interface/uploadImage'
 import { api } from '@/api'
 

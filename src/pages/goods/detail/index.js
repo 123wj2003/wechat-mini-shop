@@ -1,20 +1,17 @@
-import GoodsModel from '@/models/goods'
-import CartModel from '@/models/cart'
-import GoodsEvaluateModel from '@/models/goodsEvaluate'
-import GoodsCollectModel from '@/models/goodsCollect'
 import fa from '@/utils/fa'
 import CartLogic from '@/logics/cart'
-import "regenerator-runtime/runtime"
+import connect from "@/utils/connect";
+import Toast from "@/utils/toast";
+import navigation from "@/utils/navigation";
 
-const goodsModel = new GoodsModel()
-const cartModel = new CartModel()
-const goodsEvaluateModel = new GoodsEvaluateModel()
-const goodsCollectModel = new GoodsCollectModel()
-Page({
+Page(connect(({ user, goodsCollect }) => ({
+    login: user.login,
+    userInfo: user.self,
+    is_collect: !!goodsCollect.state.result.state,
+}))({
     data: {
         onLoaded: false,
-        id: 15,
-        userInfo: {},
+        id: 151,
         cartTotalNumber: 0,
         cartGoods: null,
         inCartNumber: 0,
@@ -41,38 +38,41 @@ Page({
             }
         ],
         selectedId: '1',
-        detail: {}
+        detail: {},
+        brandGoods: {
+            total_number: 0,
+            list: []
+        },
     },
     async onLoad(options) {
-        wx.showShareMenu({
-            withShareTicket: true
-        })
+        wx.showShareMenu({ withShareTicket: true })
         // todo 商品不存在的情况判断
         // todo 已经下架的状态
-        this.setData({
-            id: options['id'] ? options['id'] : 16,
-        })
-        await this.initGoodsInfo()
-        await this.initGoodsEvaluateList()
-        const user_info = fa.cache.get('user_info')
-        this.setData({
-            userInfo: user_info
-        })
-        if (user_info) {
-            this.initTotalNumber()
-        }
+        this.setData({ id: options['id'] ? options['id'] : 151 })
+        this.initGoodsInfo()
+        this.initGoodsEvaluateList()
+        const { login } = this.data
+        login && this.initTotalNumber()
     },
     async initGoodsEvaluateList() {
-        const result = await goodsEvaluateModel.list({
-            goods_id: this.data.detail.id,
-            page: 1,
-            rows: 3
+        const { dispatch } = this
+        dispatch({
+            type: "goodsEvaluate/list",
+            payload: {
+                goods_id: this.data.id,
+                page: 1,
+                rows: 3
+            },
+            callback: (e) => {
+                if (e.code === 0) {
+                    this.setData({
+                        evaluateList: e.result.list
+                    })
+                } else {
+                    Toast.fail(e.msg)
+                }
+            }
         })
-        if (result) {
-            this.setData({
-                evaluateList: result
-            })
-        }
     },
     addCart() {
         // 判断是否需登陆了
@@ -89,22 +89,32 @@ Page({
 
     },
     onLoginSuccess() {
-        this.setData({
-            userInfo: fa.cache.get('user_info')
-        })
+
     },
-    async onCollect() {
-        if (this.data.userInfo) {
-            const result = await goodsCollectModel.add({
-                goods_id: this.data.detail.id
+    onCollect() {
+        const { dispatch } = this
+        const { login, is_collect, id } = this.data;
+        if (login) {
+            dispatch({
+                type: 'goodsCollect/changeState',
+                payload: {
+                    is_collect,
+                    goods_ids: [id]
+                },
+                callback: () => {
+                    this.initGoodsCollectState()
+                }
             })
-            if (result !== false) {
-                fa.toast.show({
-                    title: '成功收藏'
-                })
-            }
-        } else {
-            return false
+        }
+    },
+    initGoodsCollectState() {
+        const { dispatch } = this
+        const { login, id } = this.data
+        if (login) {
+            dispatch({
+                type: 'goodsCollect/state',
+                payload: { goods_id: id }
+            })
         }
     },
     goCart() {
@@ -126,18 +136,22 @@ Page({
             stepper: e.detail
         })
     },
-    async onGoodsSkuMatchSuccess(e) {
-        console.log('onGoodsSkuMatchSuccess')
-        this.setData({
-            goodsSkuInfo: e.detail.goodsSkuInfo
-        })
-        const cartGoods = await cartModel.info({ goods_sku_id: e.detail.goodsSkuInfo.id })
-        if (cartGoods) {
-            this.setData({
-                cartGoods: cartGoods,
-                inCartNumber: cartGoods.goods_num
+    onGoodsSkuMatchSuccess(e) {
+        this.setData({ goodsSkuInfo: e.detail.goodsSkuInfo }, () => {
+            const { dispatch } = this
+            dispatch({
+                type: 'cart/info',
+                payload: { goods_sku_id: e.detail.goodsSkuInfo.id },
+                callback: (e) => {
+                    if (e.code === 0) {
+                        this.setData({
+                            cartGoods: e.result.info,
+                            inCartNumber: e.result.info.goods_num
+                        })
+                    }
+                }
             })
-        }
+        })
     },
     async onGoodsSkuMatchFail(e) {
         this.setData({
@@ -156,9 +170,7 @@ Page({
             return false
         } else {
             const inCartNumber = this.data.inCartNumber + this.data.stepper
-            if (!this.data.userInfo) {
-                this.login()
-            } else if (inCartNumber > goodsSkuInfo.stock) {
+            if (inCartNumber > goodsSkuInfo.stock) {
                 fa.toast.show({
                     title: '库存不足' // todo 加入到code
                 })
@@ -167,14 +179,24 @@ Page({
                 const result = await cartLogic.save(goodsSkuInfo.id, this.data.buyMode === 'buy_now' ? this.data.stepper : inCartNumber)
                 if (result !== false) {
                     if (this.data.buyMode === 'buy_now') {
-                        const cartInfo = await cartModel.info({ goods_sku_id: goodsSkuInfo.id })
-                        wx.navigateTo({
-                            url: '/pages/cart/orderFill/index?way=buy_now&cart_ids=' + JSON.stringify([cartInfo.id])
+                        const { dispatch } = this
+                        dispatch({
+                            type: 'cart/info',
+                            payload: {
+                                goods_sku_id: goodsSkuInfo.id
+                            },
+                            callback: (e) => {
+                                if (e.code === 0) {
+                                    navigation.navigate('cart/orderFill', {
+                                        cart_ids: JSON.stringify([e.result.info.id])
+                                    })
+                                } else {
+                                    Toast.fail(e.msg)
+                                }
+                            }
                         })
                     } else {
-                        fa.toast.show({
-                            title: '成功加入购物车'
-                        })
+                        Toast.success("成功加入购物车")
                     }
                     this.setData({
                         inCartNumber: inCartNumber
@@ -190,47 +212,65 @@ Page({
         }
     },
     async initTotalNumber() {
-        const cartTotalNumber = await cartModel.totalNum()
-        if (cartTotalNumber !== false) {
-            this.setData({
-                cartTotalNumber: cartTotalNumber
-            })
-        }
+        const { dispatch } = this
+        dispatch({
+            type: "cart/totalNum",
+            callback: (e) => {
+                if (e.code === 0) {
+                    this.setData({
+                        cartTotalNumber: e.result.total_num
+                    })
+                } else {
+                    Toast.fail(e.msg)
+                }
+            }
+        })
     },
     async initGoodsInfo() {
-        const result = await goodsModel.info({
-            id: this.data.id
-        })
-        console.log(result)
-        if (result) {
-            let detail = result.info
-            this.setData({
-                detail
-            })
-        } else {
-            fa.toast.show({
-                title: fa.code.parse(goodsModel.getException().getCode())
-            })
-        }
-        // 防止提前渲染报错
-        this.setData({
-            onLoaded: true,
-        })
-    },
-    bodyImagePreview({ currentTarget }) {
-        let images = []
-        this.data.detail.body.forEach(function (item, index, array) {
-            if (item.type === 'image') {
-                images.push(item.value.url)
+        const { dispatch } = this
+        const { id } = this.data
+        dispatch({
+            type: 'goods/info',
+            payload: {
+                id
+            },
+            callback: (e) => {
+                if (e.code === 0) {
+                    this.setData({
+                        detail: e.result.info,
+                        onLoaded: true
+                    }, () => {
+                        this.initGoodsCollectState()
+                    })
+
+                    if (typeof e.result.info['brand'] !== "undefined" && typeof e.result.info['brand']["id"] !== "undefined") {
+                        dispatch({
+                            type: 'goods/list',
+                            payload: {
+                                brand_ids: [e.result.info.brand.id],
+                                rows: 6,
+                            },
+                            callback: (brandResult) => {
+                                if (brandResult.code === 0) {
+                                    this.setData({
+                                        brandGoods: brandResult.result,
+                                    })
+                                } else {
+                                    Toast.fail(brandResult.msg)
+                                }
+                            }
+                        })
+                    }
+                } else {
+                    Toast.fail(e.msg)
+                }
             }
-        });
-        wx.previewImage({
-            current: currentTarget.dataset.url,
-            urls: images
         })
     },
-    onBodyGoodsClick() {
-        // 当前页面跳转，小程序选择无限级页面，或者跳转前关闭当前，回来的时候back判断上一层点击的id，这样能弥补没法返回的功能
+    onBrandPress() {
+        navigation.navigate('brand/detail', {
+            id: this.data.detail.brand.id
+        })
     },
     bannerPreview({ currentTarget }) {
         wx.previewImage({
@@ -250,4 +290,4 @@ Page({
             path: `/pages/goods/detail/index?id=${goodsInfo.id}`
         }
     }
-})
+}))

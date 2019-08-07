@@ -13,6 +13,12 @@ Component({
     methods: {
         onClick(e) {
             this.triggerEvent('click', { index: e.currentTarget.dataset.index, dataSource: this.data.dataSource });
+        },
+        imageLoad(e){
+            const ratio = e.detail.width / wx.getSystemInfoSync().windowWidth
+            this.setData({
+                height: e.detail.height / ratio
+            })
         }
     },
     attached() {

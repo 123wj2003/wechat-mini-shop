@@ -1,7 +1,5 @@
-import "regenerator-runtime/runtime"
-import { api, request } from '../api';
-import Model from '../utils/model'
-import { AreaListInterface } from '../interface/area'
+import { api, request } from '@/api';
+import Model from '@/utils/model'
 
 export default class Wechat extends Model {
     async buildConfig(params) {

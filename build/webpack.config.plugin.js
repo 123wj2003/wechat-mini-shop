@@ -26,6 +26,10 @@ module.exports = [merge(baseConfig, {
       {
         from: resolve('project.config.json'),
         to: resolve('dist/project.config.json')
+      },
+      {
+        from: resolve('themes'),
+        to: resolve('dist/themes')
       }
     ])
   ]

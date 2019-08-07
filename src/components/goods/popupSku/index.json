@@ -3,7 +3,7 @@
   "usingComponents": {
     "fa-stepper": "@/ui/stepper/index",
     "fa-popup": "@/ui/popup/index",
-    "login-view": "../../login/view/index",
+    "login-view": "@/components/login/view/index",
     "fa-button": "@/ui/btn/index"
   }
 }

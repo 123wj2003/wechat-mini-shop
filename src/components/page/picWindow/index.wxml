@@ -2,7 +2,7 @@
     <block wx:if="{{dataSource.options.layout_style === 1}}">
         <view class="page-pic-window-mix">
             <block wx:for="{{dataSource.data}}" wx:key="key" wx:for-index="index" wx:for-item="item">
-                <image src="{{item.img.url}}" mode="aspectFill" data-index="{{index}}" bindtap="onClick" />
+                <image src="{{item.img.url}}" mode="scaleToFill" data-index="{{index}}" bind:tap="onPress" />
             </block>
         </view>
     </block>
@@ -10,7 +10,40 @@
     <block wx:if="{{dataSource.options.layout_style === 2}}">
         <view class="page-pic-window-rows">
             <block wx:for="{{dataSource.data}}" wx:key="key" wx:for-index="index" wx:for-item="item">
-                <image src="{{item.img.url}}" mode="aspectFill" data-index="{{index}}" bindtap="onClick" />
+                <image src="{{item.img.url}}" mode="widthFix" data-index="{{index}}" bind:tap="onPress" />
+            </block>
+        </view>
+    </block>
+
+    <block wx:if="{{dataSource.options.layout_style === 112}}">
+        <view class="flexWrap">
+            <block wx:for="{{dataSource.data}}" wx:key="key" wx:for-index="index" wx:for-item="item">
+                <image
+                        src="{{item.img.url}}"
+                        mode="widthFix" data-index="{{index}}"
+                        bind:tap="onPress"
+                        style="width:50vw"
+                />
+            </block>
+        </view>
+    </block>
+
+    <block wx:if="{{dataSource.options.layout_style === 113}}">
+        <view class="flexWrap">
+            <block wx:for="{{dataSource.data}}" wx:key="key" wx:for-index="index" wx:for-item="item">
+                <image src="{{item.img.url}}" mode="widthFix" data-index="{{index}}" bind:tap="onPress"
+                       style="width:33.3333333vw"
+                />
+            </block>
+        </view>
+    </block>
+
+    <block wx:if="{{dataSource.options.layout_style === 114}}">
+        <view class="flexWrap">
+            <block wx:for="{{dataSource.data}}" wx:key="key" wx:for-index="index" wx:for-item="item">
+                <image src="{{item.img.url}}" mode="widthFix" data-index="{{index}}" bind:tap="onPress"
+                       style="width:25vw"
+                />
             </block>
         </view>
     </block>

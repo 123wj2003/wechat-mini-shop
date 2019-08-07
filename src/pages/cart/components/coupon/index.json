@@ -1,0 +1,11 @@
+{
+  "component": true,
+  "usingComponents": {
+    "fa-tab": "@/ui/tab/index",
+    "coupon-item":"./item/index",
+    "fa-popup": "@/ui/popup/index",
+    "unusable-list": "./unusableList/index",
+    "usable-list": "./usableList/index",
+    "fa-button": "@/ui/btn/index"
+  }
+}

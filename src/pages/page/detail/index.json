@@ -1,9 +1,10 @@
 {
-  "navigationBarTitleText": "FaShop商城系统",
+  "navigationBarTitleText": "FaShop",
   "enablePullDownRefresh": true,
   "usingComponents": {
     "page-banner": "@/components/page/banner/index",
     "page-grid-nav-bar": "@/components/page/gridNavBar/index",
+    "page-goods": "@/components/page/goods/index",
     "page-goods-list": "@/components/page/goodsList/index",
     "page-divider": "@/components/page/divider/index",
     "page-goods-search": "@/components/page/goodsSearch/index",
@@ -12,6 +13,7 @@
     "page-placeholder-line": "@/components/page/placeholderLine/index",
     "page-column-title": "@/components/page/columnTitle/index",
     "page-text-nav": "@/components/page/textNav/index",
-    "page-video": "@/components/page/video/index"
+    "page-video": "@/components/page/video/index",
+    "page-coupon": "@/components/page/coupon/index"
   }
 }

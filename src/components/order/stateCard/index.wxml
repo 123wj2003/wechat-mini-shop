@@ -5,6 +5,13 @@
     </view>
 </block>
 <view class="order-state-card">
+    <block wx:if="{{orderState === 0}}">
+        <view class="left">
+            <text class="state">已取消</text>
+        </view>
+        <view class="right">
+        </view>
+    </block>
     <block wx:if="{{orderState === 10}}">
         <view class="left">
             <image src="/themes/default/order/order-state-wait.png" mode="scaleToFill" />

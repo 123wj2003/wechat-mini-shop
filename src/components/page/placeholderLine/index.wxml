@@ -1,2 +1,5 @@
-<view class="page-placeholder-line" style="background-color: #F8F8F8;height: {{dataSource.options.height}}">
+<view
+        class="page-placeholder-line"
+      style="height: {{dataSource.options.height}}px"
+>
 </view>

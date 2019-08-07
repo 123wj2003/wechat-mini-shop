@@ -1,21 +1,20 @@
-import fa from "@/utils/fa";
 import LoginLogic from "@/logics/login";
-import "regenerator-runtime/runtime"
+import storage from "@/services/storage";
 
 Component({
     externalClasses: ['mask-class', 'container-class'],
     properties: {},
     data: {
-        userInfo : null,
+        login: false,
         scopeUserInfo: false
     },
     ready() {
-        const userInfo = fa.cache.get('user_info')
-        if(userInfo){
+        const login = !!storage.getUserInfo()
+        if (login) {
             this.setData({
-                userInfo
+                login
             })
-        }else{
+        } else {
             const self = this
             wx.getSetting({
                 success: (res) => {
@@ -25,7 +24,6 @@ Component({
                     } else {
                         scopeUserInfo = res.authSetting["scope.userInfo"]
                     }
-                    console.log(scopeUserInfo)
                     self.setData({
                         scopeUserInfo
                     })
@@ -39,9 +37,9 @@ Component({
             if (this.data.scopeUserInfo === true || (e.type === 'getuserinfo' && e.detail.errMsg === 'getUserInfo:ok')) {
                 const loginLogic = new LoginLogic({
                     success: function (result) {
-                        if (result.code === 1) {
+                        if (result.code === 0) {
                             self.setData({
-                                userInfo: fa.cache.get('user_info')
+                                login: true
                             })
                             self.triggerEvent('success', { result });
                         } else {

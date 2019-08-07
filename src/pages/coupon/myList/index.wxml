@@ -1,0 +1,24 @@
+<view style="background-color:#F8F8F8;display: block;overflow: hidden">
+    <fa-tab
+            list="{{ stateTabs }}"
+            selected-id="{{state_type}}"
+            height="40"
+            fixed="true"
+            bindtabchange="onTabChange"
+    />
+    <block wx:for="{{list}}" wx:key="item" wx:for-index="index">
+        <coupon-item
+                item="{{item.coupon}}"
+                login="{{login}}"
+                bind:onPress="onPress"
+                data-index="{{index}}"
+                class="item"
+        />
+    </block>
+    <block wx:if="{{list.length===0}}">
+        <view class="list-empty">
+            <image src="/themes/default/order/list-empty.png" mode="aspectFill"></image>
+            <text>暂无相关数据</text>
+        </view>
+    </block>
+</view>

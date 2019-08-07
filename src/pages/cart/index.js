@@ -1,14 +1,18 @@
-import CartModel from '@/models/cart'
+import CartModel from '@/model/cart'
 import fa from '@/utils/fa'
-import "regenerator-runtime/runtime"
+
 import CartLogic from "@/logics/cart";
 import LoginLogic from "@/logics/login";
-import GoodsModel from "@/models/goods";
+import GoodsModel from "@/model/goods";
+import connect from "@/utils/connect";
 
 const cartModel = new CartModel()
 const goodsModel = new GoodsModel()
 
-Page({
+Page(connect(({ user }) => ({
+    login: user.login,
+    userInfo: user.self,
+}))({
     data: {
         cartListLoadedState: false,
         onLoaded: false,
@@ -29,7 +33,6 @@ Page({
         checkedGoodsSkuInfoIds: [],
         checkedCartIds: [],
         allChecked: false,
-        userInfo: null,
     },
     async onRemove() {
         await cartModel.del({
@@ -38,7 +41,6 @@ Page({
         await this.initCartList()
     },
     onRemoveChecked(e) {
-        console.log(e)
         const id = e.currentTarget.dataset.goodsSkuId
         let ids = this.data.removeCheckSkuIds
         !fa.inArray(id, ids) ? ids.push(id) : ids = fa.remove(ids, id)
@@ -100,7 +102,6 @@ Page({
             isSaveMode: !this.data.isSaveMode
         })
         this.initCartList()
-
     },
     goOrderFill() {
         wx.navigateTo({
@@ -108,31 +109,27 @@ Page({
         })
     },
     goGoodsDetail(e) {
-        console.log(e)
         wx.navigateTo({
             url: `/pages/goods/detail/index?id=${e.detail.goodsId}`
         })
     },
-    async login() {
+    login() {
         const self = this
         const loginLogic = new LoginLogic({
             success: function (result) {
-                if (result.code === 1) {
-                    self.setData({
-                        userInfo: fa.cache.get('user_info')
-                    })
+                if (result.code === 0) {
+                    self.init()
                 }
             }
         })
-        await loginLogic.wechatLogin()
-        this.init()
+        loginLogic.wechatLogin()
     },
     async onPullDownRefresh() {
         await cartModel.list()
         wx.stopPullDownRefresh()
     },
     async inCartNumberChange(e) {
-        const goods_sku_id = this.data.cartList[e.detail.index].goods_sku_id
+        const goods_sku_id = this.data.cartList[e.detail.index2].goods_sku_id
         const number = e.detail.number
 
         const cartLogic = new CartLogic()
@@ -153,15 +150,14 @@ Page({
     async onShow() {
         await this.init()
     },
-    async init(){
-        const user_info = fa.cache.get('user_info')
-        this.setData({
-            userInfo: user_info ? user_info : null,
-            onLoaded: true
-        })
-        if (fa.cache.get('user_info')) {
+    async init() {
+        const { login } = this.data
+        if (login) {
             await this.initCartList()
         }
+        this.setData({
+            onLoaded: true
+        })
     },
     async initCartList() {
         // 计算金额
@@ -180,8 +176,8 @@ Page({
                 if (cartList[i].checked === true) {
                     checkedCartIds.push(cartList[i].id)
                     checkedGoodsSkuInfoIds.push(cartList[i].goods_sku_id)
-                    // todo 多个float相加有bug 暂时想不通
-                    total += parseFloat(cartList[i].goods_price).toFixed(2) * cartList[i].goods_num
+
+                    total += parseFloat(cartList[i].goods_price) * cartList[i].goods_num
                     totalNum += cartList[i].goods_num
                 }
 
@@ -191,7 +187,7 @@ Page({
                     cartList[i]['remove_checked'] = false
                 }
             }
-            total = total.toFixed(2)
+            total = parseFloat(total.toFixed(2))
 
             this.setData({
                 cartListLoadedState: true,
@@ -288,4 +284,4 @@ Page({
             path: `/pages/index/index`
         }
     }
-})
+}))

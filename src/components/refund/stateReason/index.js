@@ -1,4 +1,3 @@
-import Time from '@/utils/time'
 Component({
     externalClasses: ['mask-class', 'container-class'],
     properties: {

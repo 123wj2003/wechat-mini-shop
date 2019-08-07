@@ -31,7 +31,6 @@ Component({
         format(number, format) {
             const formateArr = ['Y', 'M', 'D', 'h', 'm', 's']
             let returnArr = []
-            console.log(number)
             let date = new Date(number * 1000)
             returnArr.push(date.getFullYear())
             returnArr.push(this.formatNumber(date.getMonth() + 1))

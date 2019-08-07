@@ -1,14 +1,17 @@
 <view class="order-card-header">
     <view class="left">
         <text>单号：{{sn}}</text>
+        <text class="activityText" wx:if="{{activityText}}">{{activityText}}</text>
     </view>
     <view class="right">
         <block wx:if="{{state === 0}}">
             <span class="state state-0">已取消</span>
         </block>
-        <block wx:if="{{state === 10}}">
+        <block wx:if="{{state === 10  && showPayBtn}}">
             <span class="state state-10">等待付款</span>
-            <!--<image class="del-icon" src="https://ws3.sinaimg.cn/large/006tNc79ly1frlfuicj18j303c03cq2v.jpg" mode="scaleToFill"></image>-->
+        </block>
+        <block wx:if="{{state === 10 && !showPayBtn}}">
+            <span class="state state-0">已超时</span>
         </block>
         <block wx:if="{{state === 20}}">
             <span class="state state-20">待发货</span>

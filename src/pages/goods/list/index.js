@@ -1,7 +1,4 @@
-import GoodsModel from '@/models/goods'
-import fa from '@/utils/fa'
-import "regenerator-runtime/runtime"
-
+import GoodsModel from '@/model/goods'
 const goodsModel = new GoodsModel()
 
 Page({

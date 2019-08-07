@@ -33,13 +33,17 @@ Component({
             type: Boolean,
             value: false
         },
+        showCancelBtn:{
+            type: Boolean,
+            value: false
+        }
     },
     methods: {
         onClick() {
             this.triggerEvent('click', { orderId: this.data.orderId });
         },
         onCancel() {
-            this.triggerEvent('cancel', { orderId: this.data.orderId });
+            this.triggerEvent('cancel', { orderInfo: this.data.orderInfo });
         },
         onReceive() {
             this.triggerEvent('receive', { orderInfo: this.data.orderInfo });
@@ -49,9 +53,6 @@ Component({
         },
         onEvaluate(){
             this.triggerEvent('evaluate', { orderInfo: this.data.orderInfo });
-        },
-        onLogistics() {
-            this.triggerEvent('logistics', { orderId: this.data.orderId });
         }
     }
 });

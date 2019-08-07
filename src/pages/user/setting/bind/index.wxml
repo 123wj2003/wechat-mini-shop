@@ -1,20 +1,19 @@
 <view class="user-setting-bind">
     <fa-panel>
         <fa-cell-group>
-            <fa-cell title="手机号" is-link>
+            <fa-cell title="手机号" is-link="{{isBindPhone}}" bind:tap="onBindPhone">
                 <view class="icon" slot="icon">
-                    <image src="https://ws3.sinaimg.cn/large/006tNc79ly1frlfuicj18j303c03cq2v.jpg"
-                           mode="aspectFit"></image>
+                    <image src="./assets/phone.png" mode="aspectFit"></image>
                 </view>
-                <text slot="footer">未绑定/已绑定</text>
+                <text slot="footer">{{isBindPhone ? shyPhone + ' 去解绑':'去绑定'}}</text>
             </fa-cell>
-            <fa-cell title="微信" is-link>
-                <view class="icon" slot="icon">
-                    <image src="https://ws3.sinaimg.cn/large/006tNc79ly1frlfuicj18j303c03cq2v.jpg"
-                           mode="aspectFit"></image>
-                </view>
-                <text slot="footer">未绑定/已绑定</text>
-            </fa-cell>
+<!--            <fa-cell title="微信" is-link>-->
+<!--                <view class="icon" slot="icon">-->
+<!--                    <image src="https://ws3.sinaimg.cn/large/006tNc79ly1frlfuicj18j303c03cq2v.jpg"-->
+<!--                           mode="aspectFit"></image>-->
+<!--                </view>-->
+<!--                <text slot="footer">未绑定/已绑定</text>-->
+<!--            </fa-cell>-->
         </fa-cell-group>
     </fa-panel>
     <view class="footer">
@@ -23,3 +22,4 @@
         <text>FaShop承诺保障您的账号隐私安全。</text>
     </view>
 </view>
+<fa-dialog id="fa-dialog-confirm"></fa-dialog>

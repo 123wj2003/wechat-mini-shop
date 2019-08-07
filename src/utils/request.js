@@ -31,16 +31,19 @@ const addQs = (url, qs) => {
     if (qs && typeof qs === 'object') {
         /* eslint no-restricted-syntax: 0 */
         for (const k of Object.keys(qs)) {
-            queryString += `&${k}=${qs[k]}`;
-        }
-        if (queryString.length > 0) {
-            if (url.split('?').length < 2) {
-                queryString = queryString.substring(1);
-            } else if (url.split('?')[1].length === 0) {
-                queryString = queryString.substring(1);
+            if (Array.isArray(qs[k])) {
+                queryString += `${!queryString?'':'&'}`;
+                queryString += qs[k]
+                    .map(function (val2) {
+                        return encodeURIComponent(k) +
+                            "[]=" +
+                            encodeURIComponent(val2);
+                    })
+                    .join("&");
+            } else {
+                queryString += `${!queryString?'':'&'}${k}=${qs[k]}`;
             }
         }
-
         if (url.indexOf('?') === -1) {
             newUrl = `${url}?${queryString}`;
         } else {
@@ -53,20 +56,19 @@ const addQs = (url, qs) => {
 
 const request = (url, options) => {
     const opts = makeOptions(url, options);
-    const { method, body, headers, qs, type, contentType } = opts;
-
+    const { method, body, headers, type, contentType } = opts;
     let requestUrl = opts.url;
-    if (qs) requestUrl = addQs(requestUrl, qs);
+    if (method === 'GET') requestUrl = addQs(requestUrl, body);
 
     let header = headers;
     if ((!headers || !headers['content-type']) && contentType) {
-        header = Object.assign({}, headers, { 'content-type': contentType });
+        header = Object.assign({}, headers, { 'content-type': contentType, 'source': 3 });
     }
     return new Promise((resolve, reject) => {
         wx.request({
             url: requestUrl,
             method,
-            data: body,
+            data: method === 'GET' ? {} : body,
             header,
             dataType: type,
             success: (response) => {
@@ -89,8 +91,14 @@ const request = (url, options) => {
                     res = Object.assign({}, res, errors);
                     reject(res);
                 }
-
-                resolve(res);
+                const e = res.body
+                if (e.code === 10005 && requestUrl.indexOf('user/logout') === -1) {
+                    getApp()._store.dispatch({
+                        type: "user/logout"
+                    })
+                } else {
+                    resolve(res);
+                }
             },
             fail: (err) => {
                 reject({ status: 0, statusText: '', errcode: -1, errmsg: `${err.errMsg}` });

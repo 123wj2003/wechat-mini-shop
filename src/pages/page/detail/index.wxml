@@ -1,0 +1,109 @@
+<view style="background-color:{{backgroundColor}};display: block;overflow: hidden;padding-bottom: 60px">
+    <view wx:for="{{pageBody}}" wx:key="key" wx:for-index="index" wx:for-item="item">
+        <block wx:if="{{item.type === 'image_ads'}}">
+            <page-banner
+                    dataSource="{{item}}"
+                    bind:click="onBannerClick"
+                    id="pageItem{{index}}"
+                    data-index="{{index}}"
+            />
+        </block>
+        <block wx:elif="{{item.type === 'image_nav'}}">
+            <page-grid-nav-bar
+                    dataSource="{{item}}"
+                    bind:click="onGridNavBarClick"
+                    id="pageItem{{index}}"
+                    data-index="{{index}}"
+            />
+        </block>
+        <block wx:elif="{{item.type === 'goods'}}">
+            <page-goods-list
+                    dataSource="{{item}}"
+                    bind:click="onGoodsClick"
+                    id="pageItem{{index}}"
+                    data-index="{{index}}"
+            />
+        </block>
+        <block wx:elif="{{item.type === 'goods_list'}}">
+            <page-goods-list
+                    dataSource="{{item}}"
+                    bind:click="onGoodsClick"
+                    id="pageItem{{index}}"
+                    data-index="{{index}}"
+            />
+        </block>
+        <block wx:elif="{{item.type === 'separator'}}">
+            <page-divider
+                    dataSource="{{item}}"
+                    id="pageItem{{index}}"
+                    data-index="{{index}}"
+            />
+        </block>
+        <block wx:elif="{{item.type === 'goods_search'}}">
+            <page-goods-search
+                    dataSource="{{item}}"
+                    bind:click="onSearchClick"
+                    id="pageItem{{index}}"
+                    data-index="{{index}}"
+            />
+        </block>
+        <block wx:elif="{{item.type === 'shop_window'}}">
+            <page-pic-window
+                    dataSource="{{item}}"
+                    bind:click="onShopWindowClick"
+                    id="pageItem{{index}}"
+                    data-index="{{index}}"
+            />
+        </block>
+        <block wx:elif="{{item.type === 'top_menu'}}">
+            <page-icon-nav-bar
+                    dataSource="{{item}}"
+                    bind:click="onIconNavClick"
+                    id="pageItem{{index}}"
+                    data-index="{{index}}"
+            />
+        </block>
+        <block wx:elif="{{item.type === 'auxiliary_blank'}}">
+            <page-placeholder-line
+                    dataSource="{{item}}"
+                    id="pageItem{{index}}"
+                    data-index="{{index}}"
+            />
+        </block>
+        <block wx:elif="{{item.type === 'title'}}">
+            <page-column-title
+                    dataSource="{{item}}"
+                    id="pageItem{{index}}"
+                    data-index="{{index}}"
+            />
+        </block>
+        <block wx:elif="{{item.type === 'text_nav'}}">
+            <page-text-nav
+                    dataSource="{{item}}"
+                    bind:click="onTextNavClick"
+                    id="pageItem{{index}}"
+                    data-index="{{index}}"
+            />
+        </block>
+        <block wx:elif="{{item.type === 'video'}}">
+            <page-video
+                    dataSource="{{item}}"
+                    id="pageItem{{index}}"
+                    data-index="{{index}}"
+            />
+        </block>
+        <block wx:elif="{{item.type === 'coupon'}}">
+            <page-coupon
+                    login="{{login}}"
+                    data="{{item}}"
+                    id="pageItem{{index}}"
+                    data-index="{{index}}"
+                    bind:onChange="onItemDataChange"
+            />
+        </block>
+        <view wx:else
+              id="pageItem{{index}}"
+              data-index="{{index}}"
+        />
+    </view>
+</view>

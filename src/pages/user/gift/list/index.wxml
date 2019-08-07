@@ -1,0 +1,9 @@
+<view style="background-color:#F8F8F8;display: block;overflow: hidden">
+    <view wx:for="{{list}}" wx:key="list" wx:for-index="index" wx:for-item="item">
+        <goods-item
+            item="{{item}}"
+            bind:onPress="onPress"
+            bind:onReceivePress="onReceivePress"
+        />
+    </view>
+</view>

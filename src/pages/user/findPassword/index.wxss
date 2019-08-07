@@ -1,40 +1,16 @@
-.page {
-    background-color: #ffffff;
-    padding: 30px 30px 0 30px;
-    height: 100vh;
+.user-setting-bind-phone{
+    background-color: #F8F8F8;
+    padding-bottom: 160px;
 }
-
-.form {
-    display: block;
-    overflow: hidden;
-    background-color: #ffffff;
-}
-
-.form .input-item {
-    border-bottom: 1px solid #F8F8F8;
-    margin-bottom: 15px;
-}
-
-.form .input-item input {
-    font-size: 16px;
-    padding: 10px 0;
-}
-
-.form .username {
+.user-setting-bind-phone .smscode{
     display: flex;
-    justify-content: flex-start;
     align-items: center;
-    margin-bottom: 30px;
+}
+.user-setting-bind-phone .smscode input{
+    margin-right: 10px;
 }
 
-
-.form .username label {
-    font-size: 14px;
-    line-height: 28px;
-    color: #666666;
-    padding-right: 15px;
-}
-
-.form .btn-area {
-    margin-bottom: 15px;
+.user-setting-bind-phone fa-panel{
+    margin-bottom: 10px;
+    display: block;
 }

@@ -1,7 +1,6 @@
-import Interface from "../utils/interface";
-import Exception from "../utils/exception";
-import Time from '../utils/time';
-
+import Interface from "@/utils/interface";
+import Exception from "@/utils/exception";
+import MarketingActivity  from "@/utils/marketingActivity"
 export class OrderStateNumInterface extends Interface {
 
     state_new;
@@ -10,6 +9,7 @@ export class OrderStateNumInterface extends Interface {
     state_close;
     state_unevaluate;
     state_refund;
+    state_pay;
 
     constructor(param) {
         super()
@@ -20,6 +20,7 @@ export class OrderStateNumInterface extends Interface {
             this.state_close = param.state_close
             this.state_unevaluate = param.state_unevaluate
             this.state_refund = param.state_refund
+            this.state_pay = param.state_pay
         } catch (e) {
             throw new Exception(e, 'OrderStateNumInterface interface attribute error')
         }
@@ -77,6 +78,8 @@ export class OrderListInfoInterface extends Interface {
     if_pay;
     if_evaluate;
     if_receive;
+    marketing_activity_text;
+    totalCost;
 
     constructor(param) {
         super()
@@ -115,6 +118,15 @@ export class OrderListInfoInterface extends Interface {
             this.if_pay = param.if_pay
             this.if_evaluate = param.if_evaluate
             this.if_receive = param.if_receive
+
+
+            this.is_revise = param.is_revise
+            this.revise_amount = parseFloat(param.revise_amount)
+            this.marketing_activity = param.marketing_activity
+            this.totalCost = param.is_revise === 1 ? param.revise_amount : param.amount
+            this.marketing_activity_text = MarketingActivity.getActivityText(param.marketing_activity)
+
+
         } catch (e) {
             throw new Exception(e, 'OrderListInfoInterface interface attribute error')
         }

@@ -1,4 +1,4 @@
-<block wx:if="{{userInfo === null}}">
+<block wx:if="{{!login}}">
     <button open-type="getUserInfo" class="getUserInfo" bindgetuserinfo="onLogin" wx:if="{{!scopeUserInfo}}">
         <slot></slot>
     </button>
@@ -7,6 +7,6 @@
     </button>
 </block>
 
-<block wx:if="{{userInfo}}">
+<block wx:if="{{login}}">
     <slot></slot>
 </block>

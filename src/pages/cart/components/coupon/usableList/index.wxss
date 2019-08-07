@@ -1,0 +1,44 @@
+.container{
+    display: flex;
+    flex:1;
+    flex-direction: column;
+}
+.item{
+    overflow:hidden;
+    display:flex;
+    flex:1;
+}
+.item:last-child{
+    margin-bottom: 10px;
+}
+.list-empty{
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex:1;
+    height: 100%;
+}
+.list-empty image{
+    display: block;
+    overflow: hidden;
+    width: 122px;
+    height: 122px;
+}
+.list-empty text{
+    display: block;
+    overflow: hidden;
+    text-align: center;
+    font-size: 14px;
+    color: #999999;
+}
+.item-con{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 5px 10px 5px 5px;
+    margin-top: 5px;
+}

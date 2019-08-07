@@ -1,5 +1,5 @@
 <view class="cart" wx:if="{{onLoaded}}">
-    <block wx:if="{{userInfo!==null}}">
+    <block wx:if="{{login}}">
         <block wx:if="{{cartList.length>0}}">
             <block wx:if="{{isSaveMode === false}}">
                 <fa-panel class="save-action-panel">
@@ -111,17 +111,18 @@
             </view>
         </block>
     </block>
-    <block wx:if="{{userInfo===null}}">
+    <block wx:if="{{!login}}">
         <view class="unlogin">
             <image src="../../themes/default/cart/unlogin.png" mode="aspectFill"></image>
             <text>您还未登录，无法查看购物车</text>
-            <fa-button type="danger" size="small" bind:btnclick="login">去登陆</fa-button>
+            <fa-button type="danger" size="small" bind:btnclick="login">去登录</fa-button>
         </view>
     </block>
 </view>
 
 <goods-sku-popup
         wx:if="{{goodsInfo}}"
+        login="{{login}}"
         show="{{cartSkuShow}}"
         goodsInfo="{{goodsInfo}}"
         inCartNumber="{{inCartNumber}}"

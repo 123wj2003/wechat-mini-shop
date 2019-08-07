@@ -1,0 +1,27 @@
+<scroll-view class="container" scroll-y="true" scroll-with-animation="true">
+    <block wx:if="{{list.length>0}}">
+        <block wx:for="{{list}}" wx:key="item" wx:for-index="index">
+            <view class="item-con" data-item="{{item}}" bindtap="onPress">
+                <coupon-item
+                        data-item="{{item}}"
+                        item="{{item.coupon}}"
+                        data-index="{{index}}"
+                        class="item"
+                />
+                <icon
+                        data-item="{{item}}"
+                        color="{{selectId === item.coupon_user_id ? 'red' : '#ccc'}}"
+                        type="success"
+                        size="16"
+                        data-index="{{index}}"
+                />
+            </view>
+        </block>
+    </block>
+    <block wx:if="{{list.length===0}}">
+        <view class="list-empty">
+            <image src="/themes/default/order/list-empty.png" mode="aspectFill"></image>
+            <text>暂无相关数据</text>
+        </view>
+    </block>
+</scroll-view>

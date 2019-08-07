@@ -1,0 +1,35 @@
+<view style="background-color:#F8F8F8;display: block;overflow: hidden">
+    <fa-popup show="{{visible}}" type="bottom" bind:close="close">
+        <view class="title-outer">
+            <image src="./modal-close.png" mode="aspectFill" class="close-icon" bindtap="close"></image>
+            <text class="title">优惠券</text>
+            <text></text>
+        </view>
+        <view class="container">
+            <fa-tab
+                    list="{{ stateTabs }}"
+                    selected-id="{{state_type}}"
+                    height="40"
+                    fixed="{{false}}"
+                    bindtabchange="onTabChange"
+                    class="tab"
+            />
+            <usable-list
+                    wx:if="{{cartIds.length>0}}"
+                    bind:onTotalNumberChange="onUsableTotalNumberChange"
+                    cartIds="{{cartIds}}"
+                    selectId="{{_selectId}}"
+                    class="list {{state_type === '1' ? '' : 'hidden'}}"
+                    bind:onChange="onChange"
+            />
+            <unusable-list
+                    wx:if="{{cartIds.length>0}}"
+                    bind:onTotalNumberChange="onUnusableTotalNumberChange"
+                    cartIds="{{cartIds}}"
+                    class="list {{state_type === '2' ? '' : 'hidden'}}"
+                    bind:onChange="onChange"
+            />
+            <fa-button type="danger" bind:btnclick="onSubmit">确认</fa-button>
+        </view>
+    </fa-popup>
+</view>

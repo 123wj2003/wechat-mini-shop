@@ -9,6 +9,7 @@ export default class Cache {
         'wx_get_setting',
         // 地区
         'area_list_level2',
+        'inviter_user_id'
     ]
 
     get($key) {

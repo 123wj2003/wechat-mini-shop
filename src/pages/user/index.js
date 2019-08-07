@@ -1,16 +1,18 @@
 import fa from '@/utils/fa'
-import OrderModel from '@/models/order'
-import "regenerator-runtime/runtime"
+import OrderModel from '@/model/order'
+import connect from "@/utils/connect";
 
 const orderModel = new OrderModel()
-Page({
+Page(connect(({ user }) => ({
+    login: user.login,
+    userInfo: user.self,
+}))({
     data: {
-        userInfo: null,
         stateNum: null,
     },
     goOrderList(e) {
         wx.navigateTo({
-            url: '/pages/order/list/index?state_type='+e.currentTarget.dataset.stateType
+            url: '/pages/order/list/index?state_type=' + e.currentTarget.dataset.stateType
         })
     },
     goAddressList() {
@@ -18,7 +20,7 @@ Page({
             url: '/pages/address/list/index'
         })
     },
-    goEvaluateList(){
+    goEvaluateList() {
         wx.navigateTo({
             url: '/pages/evaluate/list/index'
         })
@@ -33,23 +35,17 @@ Page({
             url: '/pages/refund/list/index'
         })
     },
-    onLoad(){
+    onLoad() {
         wx.showShareMenu({
             withShareTicket: true
         })
     },
     onLoginSuccess() {
-        this.setData({
-            userInfo: fa.cache.get('user_info')
-        })
+
     },
     async onShow() {
-        const userInfo = fa.cache.get('user_info')
-        this.setData({
-            loginState: fa.getLoginState(userInfo),
-            userInfo: userInfo
-        })
-        if(userInfo){
+        const { login } = this.data
+        if (login) {
             const stateNum = await orderModel.stateNum()
             this.setData({
                 stateNum: stateNum
@@ -63,4 +59,4 @@ Page({
             path: `/pages/index/index`
         }
     }
-})
+}))

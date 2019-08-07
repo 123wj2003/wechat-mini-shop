@@ -29,7 +29,6 @@ Component({
             });
         },
         onChecked: function (e) {
-            console.log(e)
             this.triggerEvent('checked', {
                 addressId: e.currentTarget.dataset.id
             });

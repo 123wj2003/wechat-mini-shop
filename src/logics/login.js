@@ -1,7 +1,8 @@
-import UserModel from '@/models/user'
-import fa from '../utils/fa'
-import "regenerator-runtime/runtime"
-// 如果用户授权了 是不需要调用 getUserInfo 的，但是为了降低bug出现 统一先获得
+import UserModel from '@/model/user'
+import fa from '@/utils/fa'
+import storage from "@/services/storage";
+import Inviter from "@/utils/inviter"
+
 export default class Login {
     userModel = new UserModel()
     options = {
@@ -19,11 +20,15 @@ export default class Login {
         const userModel = this.userModel
         const token = await userModel.login(data)
         if (token) {
-            fa.cache.set('user_token', token)
-            const user_info = await userModel.self()
-            fa.cache.set('user_info', user_info)
-            // 回调
-            this.options.success({ code: 1 })
+            // 兼容新代码
+            const app = getApp()
+            app._store.dispatch({
+                type: 'user/userLoginSuccessAfter',
+                payload: token,
+                callback: () => {
+                    this.options.success({ code: 0 })
+                }
+            })
         } else {
             this.clearUserInfo()
             return false
@@ -40,7 +45,6 @@ export default class Login {
                     wx.getUserInfo({
                         withCredentials: true,
                         success: async function (userResult) {
-                            console.log(userResult)
                             const register = await userModel.register({
                                 register_type: 'wechat_mini',
                                 wechat_mini_param: {
@@ -65,7 +69,9 @@ export default class Login {
                             }
                         },
                         fail: function (error) {
-                            self.clearUserInfo()
+                            getApp()._store.dispatch({
+                                type: 'user/logout'
+                            })
                             console.log(error)
                         }
 
@@ -79,7 +85,7 @@ export default class Login {
         })
     }
 
-    // 注意：微信这个异步还不知道怎么写才能行的通  await无效
+    // TODO 注意：微信这个异步还不知道怎么写才能行的通  await无效
     async wechatLogin(autoRegister = true) {
         const self = this
         await wx.login({
@@ -90,13 +96,15 @@ export default class Login {
                 })
                 if (login === false && autoRegister === true) {
                     self.wechatRegister()
+                } else {
+                    Inviter.bind();
                 }
             }
         });
     }
 
     clearUserInfo() {
-        fa.cache.set('user_info', null)
-        fa.cache.set('user_token', null)
+        storage.removeUserInfo()
+        storage.removeUserToken()
     }
 }

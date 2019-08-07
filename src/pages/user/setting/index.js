@@ -1,17 +1,26 @@
-import fa from '@/utils/fa'
-Page({
+import connect from "@/utils/connect";
+
+Page(connect(({ user }) => ({
+    login: user.login,
+    userInfo: user.self,
+}))({
     data: {
-        address:{
-            name:'韩文博',
-            phone:'13502176003',
-            address:'天津市 河西区 龙博花园16-1-2'
-        },
+        isBindPhone: false,
     },
-    logout(){
-        fa.cache.set('user_info',null)
-        fa.cache.set('user_token',null)
+    onShow() {
+        const { userInfo } = this.data
+        const { phone } = userInfo || {}
+        const isBindPhone = !!(phone && phone.length)
+        this.setData({
+            isBindPhone
+        })
+    },
+    logout() {
+        this.dispatch({
+            type: 'user/logout'
+        })
         wx.switchTab({
             url: '/pages/user/index'
         })
-    }
-})
+    },
+}))

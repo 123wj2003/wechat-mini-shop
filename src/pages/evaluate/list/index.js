@@ -1,5 +1,5 @@
-import GoodsEvaluateModel from '@/models/goodsEvaluate'
-import "regenerator-runtime/runtime"
+import GoodsEvaluateModel from '@/model/goodsEvaluate'
+
 
 const goodsEvaluateModel = new GoodsEvaluateModel()
 

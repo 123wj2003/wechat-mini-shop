@@ -3,6 +3,7 @@
   "usingComponents": {
     "fa-panel": "@/ui/panel/index",
     "fa-cell": "@/ui/cell/index",
-    "fa-cell-group": "@/ui/cell-group/index"
+    "fa-cell-group": "@/ui/cell-group/index",
+    "fa-dialog": "@/ui/dialog/index"
   }
 }

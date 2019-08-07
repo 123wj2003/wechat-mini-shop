@@ -1,122 +1,67 @@
-import UserModel from '@/models/user'
-import "regenerator-runtime/runtime"
+import UserModel from '@/model/user'
 import fa from '@/utils/fa'
-import validator from "../../../libs/validator/validator"
+import validate from "@/libs/validator"
+import connect from "@/utils/connect";
+import navigation from "@/utils/navigation"
 
-Page({
+Page(connect(({ user, loading }) => ({
+    login: user.login,
+    userLoginLoading: loading.effects["user/login"],
+}))({
     userModel: new UserModel(),
     data: {
         login_type: 'password',
-        username: '13502176003',
-        password: '123456',
+        username: '',
+        password: '',
     },
     onLoad: async function () {
 
     },
-    async passwordLogin() {
-        if (validator.isEmpty(this.data.username) === true) {
+    passwordLogin() {
+        const { username, password } = this.data
+        if (validate.isEmpty(username) === true) {
             fa.toast.show({
                 title: fa.code.parse('user_phone_format_error')
             })
             return
         }
-        if (validator.isEmpty(this.data.password) === true) {
+        if (validate.isEmpty(password) === true) {
             fa.toast.show({
                 title: fa.code.parse('user_password_require')
             })
             return
         }
-        if (validator.isMobilePhone(this.data.username, 'zh-CN') !== true) {
+        if (validate.isMobilePhone(username, 'zh-CN') !== true) {
             fa.toast.show({
                 title: fa.code.parse('user_phone_format_error')
             })
         }
-
-        const result = await this.userModel.login({
-            login_type: 'password',
-            username: this.data.username,
-            password: this.data.password,
-        })
-        if (result) {
-            fa.cache.set('user_token', result)
-            const user_info = await this.userModel.self()
-            fa.cache.set('user_info', user_info)
-        } else {
-            fa.toast.show({
-                title: fa.code.parse(this.userModel.getException().getCode())
-            })
-        }
-    },
-    async _wechatLogin(data) {
-        const userModel = this.userModel
-        const token = await userModel.login(data)
-        if (token) {
-            fa.cache.set('user_token', token)
-            const user_info = await userModel.self()
-            fa.cache.set('user_info', user_info)
-        } else {
-            return false
-        }
-    },
-    async wechatRegister() {
-        const self = this
-        const userModel = this.userModel
-        const result = await wx.login({
-            success: async function (res) {
-                if (res.code) {
-                    const code = res.code
-                    wx.getUserInfo({
-                        withCredentials: true,
-                        success: async function (userResult) {
-                            const register = await userModel.register({
-                                register_type: 'wechat_mini',
-                                wechat_mini_param: {
-                                    code: code,
-                                    encryptedData: userResult.encryptedData,
-                                    iv: userResult.iv
-                                }
-                            })
-                            if (register) {
-                                await wx.login({
-                                    success: async function (loginResult) {
-                                        await self._wechatLogin({
-                                            login_type: 'wechat_mini',
-                                            wechat_mini_code: loginResult.code
-                                        })
-                                    }
-                                })
-                            } else {
-                                fa.toast.show({
-                                    title: fa.code.parse(userModel.getException().getCode())
-                                })
-                            }
-                        }
-                    })
+        const { dispatch } = this
+        dispatch({
+            type: 'user/login',
+            payload: {
+                login_type: 'password',
+                username: this.data.username,
+                password: this.data.password,
+            },
+            callback: (e) => {
+                if (e.code === 0) {
+                    navigation.goBack()
                 } else {
                     fa.toast.show({
-                        title: res.errMsg
+                        title: fa.code.parse(this.userModel.getException().getCode())
                     })
                 }
             }
         })
-        console.log(result)
     },
-
-    async wechatLogin() {
-        const self = this
-        const result = await wx.login({
-            success: async function (res) {
-                const login = await self._wechatLogin({
-                    login_type: 'wechat_mini',
-                    wechat_mini_code: res.code
-                })
-                if (login === false) {
-                    self.wechatRegister()
-                }
-            }
-        });
-        console.log(result)
-        console.log('最后才应该是我')
+    onWechatLoginSuccess(){
+        navigation.goBack()
+    },
+    onWechatLoginFail(){
+        fa.toast.show({
+            title: "授权失败"
+        })
     },
     bindUsername(event) {
         this.setData({
@@ -127,5 +72,8 @@ Page({
         this.setData({
             password: event.detail.value
         })
+    },
+    onFindPassword(){
+        navigation.navigate('user/findPassword')
     }
-})
+}))

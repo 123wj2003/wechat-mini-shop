@@ -1,6 +1,6 @@
-import Interface from "../utils/interface";
-import Exception from "../utils/exception";
-import Time from '../utils/time';
+import Interface from "@/utils/interface";
+import Exception from "@/utils/exception";
+import MarketingActivity from "@/utils/marketingActivity";
 
 export class OrderInfoInterface extends Interface {
     info;
@@ -18,6 +18,22 @@ export class OrderInfoInterface extends Interface {
         }
     }
 }
+
+
+function getPaymentName(code) {
+    switch (code) {
+        case 'balance':
+            return '余额支付'
+        case 'wechat_mini':
+            return '微信支付'
+        case 'wechat_app':
+            return '微信支付'
+        case 'alipay_app':
+            return '支付宝支付'
+    }
+}
+
+
 
 export class OrderInfoInfoInterface extends Interface {
     id;
@@ -57,6 +73,8 @@ export class OrderInfoInfoInterface extends Interface {
     if_evaluate;
 
     showLogisticsBtn;
+    totalCost;
+    marketing_activity_text;
 
     constructor(param) {
         super()
@@ -99,6 +117,15 @@ export class OrderInfoInfoInterface extends Interface {
             this.if_deliver = param.if_deliver
             this.if_evaluate = param.if_evaluate
             this.showLogisticsBtn = (param.state === 30 || param.state === 40)
+
+            this.is_revise = param.is_revise
+            this.revise_amount = parseFloat(param.revise_amount)
+            this.marketing_activity = param.marketing_activity
+            this.payment_name = getPaymentName(param.payment_code)
+
+            this.totalCost = param.is_revise === 1 ? param.revise_amount : param.amount
+            this.marketing_activity_text = MarketingActivity.getActivityText(param.marketing_activity)
+
         } catch (e) {
             throw new Exception(e, 'OrderGoodsInterface interface attribute error')
         }

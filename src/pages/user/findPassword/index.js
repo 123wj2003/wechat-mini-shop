@@ -1,54 +1,97 @@
-Page({
+import fa from "@/utils/fa";
+import connect from "@/utils/connect";
+
+Page(connect(({ user, loading }) => ({
+    submitLoading: loading.effects["user/editPasswordByFind"],
+}))({
     data: {
-        showBottomPopup: true,
-        stepper: {
-            // 当前 stepper 数字
-            stepper: 1,
-            // 最小可到的数字
-            min: 1,
-            // 最大可到的数字
-            max: 1
-        },
-        list: [
-            {
-                id: '1',
-                title: '商品'
-            },
-            {
-                id: '2',
-                title: '评价'
-            },
-            {
-                id: '3',
-                title: '详情'
+        phone: null,
+        verify_code: null,
+        password: null,
+        sendSuccess: false
+    },
+    onPress() {
+        const { dispatch } = this
+        const { phone, sendSuccess } = this.data;
+        if (sendSuccess === false) {
+            if (!phone || phone.length !== 11) {
+                return fa.toast.show({ title: '请输入手机号' })
+            } else {
+                dispatch({
+                    type: "verifyCode/add",
+                    payload: {
+                        channel_type: "sms",
+                        behavior: "find_password",
+                        receiver: phone,
+                    },
+                    callback: (e) => {
+                        if (e.code === 0) {
+                            this.setData({
+                                sendSuccess: true
+                            })
+                        } else {
+                            fa.toast.show({ title: "验证码发送失败" })
+                        }
+                    }
+                })
             }
-        ],
-        selectedId: '1',
-        detail: {
-            title: "2018新款风衣文艺范韩版修身款翻领纯棉七分袖百搭短款",
-            images: [
-                {
-                    url: 'https://gd4.alicdn.com/imgextra/i4/0/TB1g8wEPFXXXXb.XVXXXXXXXXXX_!!0-item_pic.jpg_400x400.jpg'
-                },
-                {
-                    url: 'https://gd4.alicdn.com/imgextra/i4/0/TB1g8wEPFXXXXb.XVXXXXXXXXXX_!!0-item_pic.jpg_400x400.jpg'
-                },
-                {
-                    url: 'https://gw.alicdn.com/bao/uploaded/i3/3305375223/TB2DmNta6n85uJjSZFLXXbqMVXa_!!3305375223.jpg'
-                },
-                {
-                    url: 'https://gw.alicdn.com/bao/uploaded/i4/22668250/TB24nBEa0PJ3eJjSZFLXXab3FXa_!!22668250.jpg'
-                },
-            ]
         }
     },
-    onLoad: function () {
+    onStart() {
 
     },
-    toggleGoodsSkuSelect() {
-        console.log('toggleGoodsSkuSelect')
+    onEnd() {
         this.setData({
-            showBottomPopup: !this.data.showBottomPopup
-        });
+            sendSuccess: false
+        })
     },
-})
+    async onSubmit() {
+        const { phone, verify_code, password } = this.data;
+        if (!phone) {
+            return fa.toast.show({ title: '请输入手机号' })
+        }
+        if (!verify_code) {
+            return fa.toast.show({ title: '请输入验证码' })
+        }
+        if (!password) {
+            return fa.toast.show({ title: '请输入密码' })
+        }
+        const { dispatch } = this
+        dispatch({
+            type: 'user/editPasswordByFind',
+            payload: {
+                phone, verify_code, password
+            },
+            callback: (e) => {
+                if (e.code === 0) {
+                    fa.toast.show({
+                        title: "操作成功"
+                    })
+                    wx.navigateBack({
+                        delta: 1
+                    })
+                } else {
+                    fa.toast.show({
+                        title: e.msg
+                    })
+                }
+
+            }
+        })
+    },
+    onPhoneChange(e) {
+        this.setData({
+            phone: e.detail.value
+        })
+    },
+    onVerifyCodeChange(e) {
+        this.setData({
+            verify_code: e.detail.value
+        })
+    },
+    onPasswordChange(e) {
+        this.setData({
+            password: e.detail.value
+        })
+    },
+}))

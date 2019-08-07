@@ -181,3 +181,11 @@
     height: 3px;
     display: block;
 }
+
+.coupon{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.coupon text{font-weight: bold}
+.coupon image{width:15px;height: 15px;}

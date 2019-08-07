@@ -1,5 +1,5 @@
-import Exception from "../utils/exception";
-import Interface from "../utils/interface";
+import Exception from "@/utils/exception";
+import Interface from "@/utils/interface";
 
 export class GoodsCategoryListInterface extends Interface {
     list;

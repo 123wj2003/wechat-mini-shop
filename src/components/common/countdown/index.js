@@ -17,6 +17,10 @@ Component({
         symbolStyle: {
             type: String,
             value: ''
+        },
+        onEnd:{
+            type:Function,
+            value:()=>{}
         }
     },
     data: {
@@ -162,7 +166,7 @@ Component({
          * end callback
          */
         emitEndCount() {
-            this.triggerEvent('endcount');
+            this.triggerEvent('onEnd');
         },
 
         onPageShow() {

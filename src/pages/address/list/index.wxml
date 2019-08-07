@@ -2,7 +2,7 @@
     <view>
         <fa-panel>
             <block wx:for="{{list}}" wx:key="key" wx:for-index="index" wx:for-item="item">
-                <address-card name="{{item.truename}}" phone="{{item.phone}}" addressId="{{item.id}}" address="{{item.combine_detail}}"
+                <address-card name="{{item.truename}}" phone="{{item.phone}}" addressId="{{item.id}}" address="{{item.combine_detail}} {{item.address}}"
                               checked="{{item.is_default ===1}}" data-index="{{index}}" data-id="{{item.id}}"
                               bind:edit="goEdit" bind:checked="onAddressChecked"></address-card>
             </block>

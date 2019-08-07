@@ -9,7 +9,7 @@
                                 <text class="name">{{item.truename}}</text>
                                 <text class="phone">{{item.phone}}</text>
                             </view>
-                            <view class="address">{{item.address}}</view>
+                            <view class="address">{{item.combine_detail}} {{item.address}}</view>
                         </view>
                     </view>
                     <view class="action">

@@ -158,7 +158,15 @@
 .setting-action {
     font-size: 12px;
     color: #666666;
-
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.setting-action fa-icon{
+    color:#C8C8C8;
+    margin-left: 3px;
 }
 .fashop-copyright{
     position: absolute;

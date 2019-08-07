@@ -1,17 +1,44 @@
 <view class="user-setting-bind-phone">
     <fa-panel>
         <fa-cell-group>
-            <fa-cell title="手机号" >
-                <input slot="footer" placeholder="请输入手机号" />
+            <fa-cell title="手机号">
+                <input
+                        slot="footer"
+                        maxlength="11"
+                        placeholder="请输入手机号"
+                        type="number"
+                        bindinput="onPhoneChange"
+                        value="{{phone}}"
+                />
             </fa-cell>
-            <fa-cell title="验证码" placeholder="请输入验证码">
+            <fa-cell title="验证码">
                 <view slot="footer" class="smscode">
-                    <input placeholder="请输入验证码" />
-                    <fa-button size="small">发送验证码</fa-button>
+                    <input
+                            maxlength="11"
+                            placeholder="请输入验证码"
+                            type="number"
+                            bindinput="onVerifyCodeChange"
+                            value="{{verify_code}}"
+                    />
+                    <fa-button size="small">
+                        <smsCode
+                                disabled="{{sendSuccess=== false || !phone || phone.length !== 11 }}"
+                                seconds="59"
+                                bind:onPress="onPress"
+                                bind:onStart="onStart"
+                                bind:onEnd="onEnd"
+                        />
+                    </fa-button>
                 </view>
             </fa-cell>
-            <fa-cell title="密码" placeholder="设置密码">
-                <input slot="footer" placeholder="请输入密码" />
+            <fa-cell title="密码">
+                <input
+                        style="width:200px"
+                        slot="footer"
+                        placeholder="设置密码(必须包含数字和字母)"
+                        bindinput="onPasswordChange"
+                        value="{{password}}"
+                />
             </fa-cell>
         </fa-cell-group>
     </fa-panel>
@@ -20,5 +47,5 @@
     </view>
 </view>
 <fixed-bottom>
-    <fa-button size="large" type="danger">确认绑定</fa-button>
+    <fa-button size="large" type="danger" bindtap="onSubmit" disabled="{{!phone || phone.length !== 11 || !verify_code || !password || password.length < 6}}">确认绑定</fa-button>
 </fixed-bottom>

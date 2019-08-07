@@ -1,0 +1,45 @@
+<view class="item" bind:tap="onPress">
+    <view class="left" style="background-color: {{canGet ? '#DE1D22' : '#ccc'}}">
+        <goods-price
+                wx:if="{{item.coupon_type === 1}}"
+                price="{{item.coupon_type1.reduce_amount}}"
+                fontSize="{{20}}"
+                fontColor="#ffffff"
+        />
+        <goods-discount
+                wx:if="{{item.coupon_type === 2}}"
+                price="{{item.coupon_type2.discount}}"
+                fontSize="{{20}}"
+                fontColor="#ffffff"
+        />
+        <text style="font-size: 10px; color: #ffffff" wx:if="{{item.threshold_choice === 1}}">无门槛</text>
+        <text style="font-size: 10px; color: #ffffff" wx:if="{{item.coupon_type !== 1}}">满¥{{item.threshold_order_amount}}{{item.coupon_type === 1 ? "减" :""}}</text>
+        <text style="font-size: 10px; color: #ffffff" wx:if="{{item.coupon_type === 1}}">满¥{{item.threshold_order_amount}}减</text>
+    </view>
+
+    <view class="right">
+        <view class="rightLeft">
+            <text class="title">{{item.title}}</text>
+            <view wx:if="{{item.valid_time_choice === 1}}" class="times">
+                <time-format value="{{item.valid_start_time}}" format="Y-M-D" />
+                <text class="time-format">至</text>
+                <time-format value="{{item.valid_end_time}}" format="Y-M-D" />
+            </view>
+            <text class="text" wx:if="{{item.valid_time_choice === 2}}">领券当日起 {{item.valid_today_limit_day}} 天内可用</text>
+            <text class="text" wx:if="{{item.valid_time_choice === 3}}">领券次日起 {{item.valid_morrow_limit_day}} 天内可用
+            </text>
+            <text class="tabviewText" wx:if="{{item.goods_choice === 1}}">全店可用</text>
+            <text class="tabviewText" wx:if="{{item.goods_choice === 2}}">部分商品可用</text>
+            <text class="tabviewText" wx:if="{{item.goods_choice === 3}}">指定不可用商品</text>
+        </view>
+        <view class="rightRight">
+            <text style="color: {{canGet ? '#DE1D22' : '#ccc'}}">{{stateText}}</text>
+        </view>
+    </view>
+</view>
+<wxs module='my'>
+    var sub = function(str) {
+    return str.slice(0,50) + '...'
+    }
+    module.exports.sub = sub
+</wxs>

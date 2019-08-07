@@ -6,6 +6,7 @@
     "fa-panel": "@/ui/panel/index",
     "fa-cell": "@/ui/cell/index",
     "cart-order-fill-card": "@/components/cart/orderFillCard/index",
-    "fa-cell-group": "@/ui/cell-group/index"
+    "fa-cell-group": "@/ui/cell-group/index",
+    "coupon-modal": "../components/coupon/index"
   }
 }

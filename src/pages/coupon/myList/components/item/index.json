@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "goods-price": "@/components/goodsPrice/index",
+    "goods-discount": "@/components/goodsDiscount/index",
+    "time-format":"@/components/common/timeFormat/index"
+  }
+}

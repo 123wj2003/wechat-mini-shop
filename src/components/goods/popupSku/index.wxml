@@ -56,7 +56,7 @@
             </view>
             <view class="footer">
                 <login-view bind:success="onLoginSuccess">
-                    <fa-button type="danger" size="large" bind:btnclick="onConfirmClick" disabled="{{!goodsSkuInfo}}">{{confirmButtonText}}
+                    <fa-button type="danger" size="large" bind:btnclick="onConfirmClick" disabled="{{specIdValueIdsChecked.length===0}}">{{confirmButtonText}}
                     </fa-button>
                 </login-view>
             </view>

@@ -1,16 +1,26 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/category/index",
-    "pages/cart/index",
+    "pages/page/detail/index",
+    "pages/categoryPage/detail/index",
+    "pages/search/result/index",
+    "pages/pointsMall/index",
+    "pages/brand/detail/index",
     "pages/goods/detail/index",
-    "pages/goods/search/index",
+    "pages/user/gift/list/index",
+    "pages/user/gift/orderFill/index",
     "pages/user/index",
+    "pages/coupon/myList/index",
+    "pages/category/index",
+    "pages/user/setting/bind/phone/index",
+    "pages/user/setting/index",
+    "pages/user/editPassword/index",
+    "pages/user/setting/bind/index",
+    "pages/cart/index",
     "pages/address/add/index",
     "pages/user/address/add/index",
     "pages/user/address/list/index",
     "pages/user/address/edit/index",
-    "pages/page/index",
     "pages/refund/list/index",
     "pages/refund/serviceApply/index",
     "pages/address/list/index",
@@ -29,21 +39,15 @@
     "pages/goods/list/index",
     "pages/user/login/index",
     "pages/pay/result/index",
-    "pages/user/setting/bind/phone/index",
-    "pages/user/setting/bind/index",
     "pages/user/setting/userinfo/index",
-    "pages/user/setting/index",
     "pages/cart/listing/index",
     "pages/refund/serviceType/index",
     "pages/user/register/smscode/index",
     "pages/user/register/password/index",
     "pages/user/register/index",
-    "pages/user/editPassword/index",
     "pages/user/editPassword/password/index",
     "pages/user/findPassword/password/index",
-    "pages/user/findPassword/index",
-    "pages/user/findPassword/smscode/index",
-    "pages/webView/index"
+    "pages/user/findPassword/index"
   ],
   "window": {
     "navigationBarTitleText": "FaShop",
@@ -54,36 +58,39 @@
     "backgroundColorBottom": "#F8F8F8"
   },
   "tabBar": {
+    "color": "#999",
+    "selectedColor": "#DBAF6A",
     "list": [
       {
         "pagePath": "pages/index/index",
-        "iconPath":"themes/default/tabbar/home.png",
-        "selectedIconPath":"themes/default/tabbar/home-a.png",
+        "iconPath": "themes/default/tabbar/home.png",
+        "selectedIconPath": "themes/default/tabbar/home-a.png",
         "text": "首页"
       },
       {
-        "pagePath": "pages/category/index",
-        "iconPath":"themes/default/tabbar/category.png",
-        "selectedIconPath":"themes/default/tabbar/category-a.png",
-        "text": "分类"
+        "pagePath": "pages/pointsMall/index",
+        "iconPath": "themes/default/tabbar/points.png",
+        "selectedIconPath": "themes/default/tabbar/points-a.png",
+        "text": "积分商城"
       },
       {
         "pagePath": "pages/cart/index",
-        "iconPath":"themes/default/tabbar/cart.png",
-        "selectedIconPath":"themes/default/tabbar/cart-a.png",
+        "iconPath": "themes/default/tabbar/cart.png",
+        "selectedIconPath": "themes/default/tabbar/cart-a.png",
         "text": "购物车"
       },
       {
         "pagePath": "pages/user/index",
-        "iconPath":"themes/default/tabbar/user.png",
-        "selectedIconPath":"themes/default/tabbar/user-a.png",
+        "iconPath": "themes/default/tabbar/user.png",
+        "selectedIconPath": "themes/default/tabbar/user-a.png",
         "text": "我的"
       }
     ]
   },
   "networkTimeout": {
-    "request": 10000,
+    "request": 60000,
     "downloadFile": 10000
   },
-  "debug": true
+  "debug": true,
+  "sitemapLocation": "sitemap.json"
 }

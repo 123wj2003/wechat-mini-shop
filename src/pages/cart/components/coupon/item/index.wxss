@@ -1,0 +1,133 @@
+.item {
+    margin: 0 5px;
+    background-color: #fff;
+    flex-direction: row;
+    overflow: hidden;
+    display: flex;
+    flex: 1;
+}
+
+.left {
+    align-items:center;
+    justify-content:center;
+    display:flex;
+    flex-direction:column;
+    background:border-box radial-gradient(transparent 0, transparent 5px, #DE1D22 5px), padding-box #DE1D22;
+    background-size:15px 15px;
+    background-position:8px 0px;
+    border-left:10px solid transparent;
+    border-right:10px solid transparent;
+    position:relative;
+    width:101px;
+}
+.left:before {
+    content: ' ';
+    display: block;
+    /* 用相同的颜色覆盖 */
+    background-color: #DE1D22;
+    /* 绝对定位，遮住中间所有的洞，只保留边角的锯齿 */
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    /* 为锯齿保留的距离 */
+    left: 10px;
+    right: 10px;
+    z-index: -1;
+}
+.unuse{
+    background: border-box radial-gradient(transparent 0, transparent 5px, #ccc 5px), padding-box #ccc;
+}
+.left:before {
+    background-color: #DE1D22;
+}
+
+.right {
+    flex: 2;
+    flex-direction: row;
+    display: flex;
+}
+
+.rightLeft {
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    flex:1
+}
+
+.rightRight {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #DE1D22;
+}
+
+.title {
+    font-size: 14px;
+    display: block;
+    line-height: 14px;
+}
+
+.text {
+    font-size: 14px;
+    display: block;
+    line-height: 14px;
+}
+
+.tabview {
+    padding: 0 8px;
+
+}
+
+.tabviewText {
+    font-size: 11px;
+    line-height: 11px;
+    background-color: #f1f1f1;
+    padding: 2px 2px;
+    border-radius: 3px;
+    color: #999;
+}
+
+.times {
+}
+
+.times time-format,.times .time-format {
+    font-size: 12px;
+    margin-right: 5px;
+    color: #666;
+}
+
+.stateview {
+    width: 44px;
+    border-width: 0.5px;
+    border-color: #eaeaea;
+    border-style: dotted;
+    align-items: center;
+    justify-content: center;
+}
+
+.selectview {
+    width: 44px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.laceList {
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    left: -6.571428571428571px;
+    z-index: 10;
+}
+
+.laceItem {
+    width: 9.2px;
+    height: 9.2px;
+    border-radius: 4.6px;
+    background-color: #f8f8f8;
+    margin-bottom: 2px;
+}

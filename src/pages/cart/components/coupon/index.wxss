@@ -1,0 +1,37 @@
+.container{
+    position:relative;
+    width:100vw;
+    height:80vh;
+    background-color:#ffffff;
+    flex:1;
+    display:flex;
+    justify-content:space-between;
+    flex-direction:column;
+}
+.tab{
+    border-bottom: 1px solid #f8f8f8;
+}
+.list{
+    flex:1;
+    display: flex;
+    background-color: #F8F8F8;
+}
+.title-outer{
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 15px 0 15px;
+    border-radius:5px 5px 0 0;
+}
+.title{
+    color:#666;
+    font-size: 16px;
+}
+.close-icon{
+    width: 15px;
+    height: 15px;
+}
+.hidden{
+    display: none;
+}

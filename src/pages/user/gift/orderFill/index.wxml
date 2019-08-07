@@ -1,0 +1,93 @@
+<view class="order-fill">
+    <fa-panel>
+        <block wx:if="{{addressId > 0}}">
+            <view class="address">
+                <view class="selected">
+                    <fa-cell is-link bind:tap="goAddressList">
+                        <view class="user">
+                            <view class="name-phone">
+                                <text class="name">{{address.truename}}</text>
+                                <text class="phone">{{address.phone}}</text>
+                            </view>
+                            <view class="address">{{address.combine_detail}} {{address.address}}</view>
+                        </view>
+                    </fa-cell>
+                </view>
+                <image
+                        src="/themes/default/cart/address-footer-line.png"
+                        class="address-footer-line"
+                />
+            </view>
+        </block>
+        <block wx:else>
+            <view class="address" bindtap="goAddressAdd">
+                <view class="un-select">
+                    <image src="/themes/default/cart/address.png"></image>
+                    <text>添加地址</text>
+                </view>
+                <image class="address-footer-line" src="/themes/default/cart/address-footer-line.png"></image>
+            </view>
+        </block>
+    </fa-panel>
+    <fa-panel>
+        <fa-cell-group>
+            <fa-cell wx:if="{{currentSku}}">
+                <view class="one-item">
+                    <view class="image">
+                        <image src="{{currentSku.img}}" mode="aspectFill" />
+                    </view>
+                    <view class="body">
+                        <text class="title">{{currentSku.title}}</text>
+                        <view class="spec">
+                            <text>{{specText}}</text>
+                            <text>x1</text>
+                        </view>
+                        <text class="price">¥{{currentSku.price}}</text>
+                    </view>
+                </view>
+            </fa-cell>
+            <fa-cell>
+                <view class="message">
+                    <input placeholder="选填 有什么想对商家说的（45字以内）" placeholder-class="placeholder-class"
+                           value="{{message}}" bindinput="onMessageChange" />
+                </view>
+            </fa-cell>
+        </fa-cell-group>
+    </fa-panel>
+    <fa-panel>
+        <fa-cell-group>
+            <fa-cell title="商品总额" wx:if="{{calculate}}">
+                <view slot="footer">
+                    <text class="freight-price">¥{{calculate.goods_amount}}
+                    </text>
+                </view>
+            </fa-cell>
+
+            <fa-cell title="赠品总额" wx:if="{{calculate}}">
+                <view slot="footer">
+                    <text class="freight-price">¥{{calculate.gift_amount}}</text>
+                </view>
+            </fa-cell>
+
+            <fa-cell title="运费" wx:if="{{calculate}}">
+                <view slot="footer">
+                    <text class="freight-price"> + ¥{{calculate ? calculate.pay_freight_fee : 0.00}}</text>
+                </view>
+            </fa-cell>
+
+        </fa-cell-group>
+    </fa-panel>
+    <fixed-bottom>
+        <view class="footer">
+            <view class="left">
+                <label>实付：</label>
+                <text>¥{{calculate.pay_amount}}</text>
+            </view>
+            <view class="right">
+                <fa-button size="large" type="danger" bind:btnclick="onCreateOrder"
+                           disabled="{{!calculate || !addressId || createLoading || calculateLoading}}">提交订单
+                </fa-button>
+            </view>
+        </view>
+    </fixed-bottom>
+</view>

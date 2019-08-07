@@ -3,7 +3,7 @@ const baseResolve = require('./webpack.config.base.resolve');
 const baseLoaders = require('./webpack.config.base.loaders');
 
 module.exports = {
-  mode: 'development',
+  mode: 'production', // production | development
   target: 'node',
   devtool: false,
   watchOptions: {
@@ -27,7 +27,7 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      PRODUCTION: JSON.stringify(process.env.NODE_ENV === 'production')
+      PRODUCTION: JSON.stringify(process.env.NODE_ENV === 'production'),
     })
   ]
 };

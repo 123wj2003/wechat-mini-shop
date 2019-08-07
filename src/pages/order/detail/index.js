@@ -1,12 +1,14 @@
 import fa from '@/utils/fa'
-import OrderModel from '@/models/order'
-import "regenerator-runtime/runtime"
-import BuyModel from "@/models/buy";
+import OrderModel from '@/model/order'
+
+import BuyModel from "@/model/buy";
+import connect from "@/utils/connect";
+import storage from "@/services/storage";
 
 const orderModel = new OrderModel()
 const buyModel = new BuyModel()
 const Dialog = require('@/ui/dialog/dialog');
-Page({
+Page(connect()({
     data: {
         id: null,
         orderInfo: null,
@@ -59,20 +61,37 @@ Page({
             url: `/pages/goods/detail/index?id=${goodsInfo.goods_id}`,
         })
     },
-    async onCancel(e) {
-        const orderInfo = e.detail.orderInfo
-        const result = await orderModel.cancel({
-            'id': orderInfo.id,
+     onCancel(e) {
+        const { dispatch } = this
+        Dialog({
+            message: '您确认取消吗？状态修改后不能变更',
+            selector: '#fa-dialog-receive',
+            buttons: [{
+                text: '取消',
+                type: 'cancel'
+            }, {
+                text: '确认',
+                color: 'red',
+                type: 'ok'
+            }]
+        }).then( ({ type }) => {
+            if (type === 'ok') {
+                const { orderInfo } = e.detail
+                dispatch({
+                    type: "order/cancel",
+                    payload: {
+                        id: orderInfo.id
+                    },
+                    callback: () => {
+                        this.init()
+                        this.updateListRow(orderInfo.id)
+                    }
+                })
+            }
         })
-        if (result) {
-            this.init()
-            this.updateListRow(orderInfo.id)
-        } else {
-            fa.toast.show({
-                title: fa.code.parse(orderModel.getException().getCode())
-            })
-        }
     },
+
+
     onEvaluate(e) {
         const orderInfo = e.detail.orderInfo
         wx.navigateTo({
@@ -109,7 +128,7 @@ Page({
         })
     },
     async onPay() {
-        const userInfo = fa.cache.get('user_info')
+        const userInfo = storage.getUserInfo()
         const orderInfo = this.data.orderInfo
         const self = this
         // 发起支付，未填写openid是因为本次开发小程序为必须微信授权登陆
@@ -118,7 +137,7 @@ Page({
             'pay_sn': orderInfo.pay_sn,
             'payment_code': 'wechat',
             'payment_channel': 'wechat_mini',
-            'openid': userInfo.wechat_mini_openid
+            'openid': userInfo.wechat_open.mini_openid
         })
         if (payResult) {
             wx.requestPayment({
@@ -131,11 +150,6 @@ Page({
                     self.init()
                     self.updateListRow()
                 },
-                'fail': function (res) {
-                    fa.toast.show({
-                        title: res
-                    })
-                }
             })
         } else {
             fa.toast.show({
@@ -150,22 +164,5 @@ Page({
             const prevPage = pages[pages.length - 2];
             prevPage.updateListRow(id);
         }
-    },
-    async onLogistics(e) {
-        const result = await orderModel.logistics({
-            id: e.detail.orderId
-        })
-        if (result) {
-            // 跳转
-            // const url = encodeURIComponent("https://m.kuaidi100.com/index_all.html?type=emsguoji&postid=BE960265852US");
-            const url = encodeURIComponent(result.info.url)
-            wx.navigateTo({
-                url: `/pages/webView/index?url=${url}`
-            })
-        } else {
-            fa.toast.show({
-                title: fa.code.parse(orderModel.getException().getCode())
-            })
-        }
     }
-})
+}))

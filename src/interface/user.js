@@ -1,5 +1,5 @@
-import Interface from "../utils/interface";
-import Exception from "../utils/exception";
+import Interface from "@/utils/interface";
+import Exception from "@/utils/exception";
 
 export class UserSelfInterface extends Interface {
     id;
@@ -7,6 +7,7 @@ export class UserSelfInterface extends Interface {
     phone;
     profile;
     assets;
+    wechat_open;
 
     constructor(param) {
         super()
@@ -14,8 +15,10 @@ export class UserSelfInterface extends Interface {
             this.id = param.info.id
             this.nickname = param.info.nickname
             this.username = param.info.username
+            this.phone = param.info.phone
             this.profile = param.info.profile
             this.assets = param.info.assets
+            this.wechat_open = param.info.assets
         } catch (e) {
             throw new Exception(e, 'UserSelfInterface interface attribute error')
         }
@@ -51,7 +54,7 @@ export class UserTokenInfoInterface extends Interface {
         super()
         try {
             this.access_token = param.access_token
-            this.expires_in = param.nickname
+            this.expires_in = param.expires_in
         } catch (e) {
             throw new Exception(e, 'TokenInfoInterface interface attribute error')
         }

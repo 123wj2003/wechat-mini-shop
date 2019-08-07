@@ -1,4 +1,3 @@
-import Exception from "../utils/exception";
 import Interface from "../utils/interface";
 
 export class AddressListInterface extends Interface {
@@ -13,7 +12,6 @@ export class AddressListInterface extends Interface {
                 return new AddressListInfoInterface(item)
             })
         } catch (e) {
-            throw new Exception(e, 'AddressListInterface interface attribute error')
         }
     }
 }
@@ -44,7 +42,6 @@ export class AddressListInfoInterface extends Interface {
             this.type = param.type
             this.address = param.address
         } catch (e) {
-            throw new Exception(e, 'AddressListInfoInterface interface attribute error')
         }
     }
 }
@@ -75,7 +72,6 @@ export class AddressInfoInterface extends Interface {
             this.type = param.type
             this.address = param.address
         } catch (e) {
-            throw new Exception(e, 'AddressInfoInterface interface attribute error')
         }
     }
 }

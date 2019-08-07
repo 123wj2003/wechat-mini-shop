@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "fa-tab": "@/ui/tab/index",
+    "coupon-item":"../item/index"
+  }
+}

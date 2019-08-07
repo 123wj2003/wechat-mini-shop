@@ -1,9 +1,8 @@
 <view class="page-container">
-    <block wx:if="{{userInfo}}">
+    <block wx:if="{{login}}">
         <fa-panel class="order-action-area">
             <view class="user-header">
-                <!--bindtap="goUserSetting"  fa-cell--access-->
-                <view class="fa-cell" >
+                <view class="fa-cell">
                     <view class="fa-cell__bd">
                         <view class="avatar">
                             <image src="{{userInfo.profile.avatar}}"
@@ -12,8 +11,9 @@
                                 <text>{{userInfo.profile.nickname}}</text>
                             </view>
                         </view>
-                        <view class="setting-action">
-                            <!--<text>设置</text>-->
+                        <view class="setting-action" bindtap="goUserSetting">
+                            <text>设置</text>
+                            <fa-icon type="arrow"></fa-icon>
                         </view>
                     </view>
                     <view class="fa-cell__ft"></view>
@@ -36,9 +36,9 @@
                 <view class="item" data-state-type="state_new" bindtap="goOrderList">
                     <view class="icon">
                         <fa-badge wx:if="{{stateNum.state_new > 0}}"
-                                color="#fff"
-                                background-color="red"
-                                font-size="12"
+                                  color="#fff"
+                                  background-color="red"
+                                  font-size="12"
                         >{{stateNum.state_new}}
                         </fa-badge>
                         <image src="/themes/default/user/order/state_new.png"
@@ -46,18 +46,31 @@
                     </view>
                     <text>待付款</text>
                 </view>
-                <view class="item" data-state-type="state_send" bindtap="goOrderList">
+                <!--                <view class="item" data-state-type="state_send" bindtap="goOrderList">-->
+                <!--                    <view class="icon">-->
+                <!--                        <fa-badge wx:if="{{stateNum.state_send > 0}}"-->
+                <!--                                  color="#fff"-->
+                <!--                                  background-color="red"-->
+                <!--                                  font-size="12"-->
+                <!--                        >{{stateNum.state_send}}-->
+                <!--                        </fa-badge>-->
+                <!--                        <image src="/themes/default/user/order/state_pay.png"-->
+                <!--                               mode="aspectFit" />-->
+                <!--                    </view>-->
+                <!--                    <text>待收货</text>-->
+                <!--                </view>-->
+                <view class="item" data-state-type="state_pay" bindtap="goOrderList">
                     <view class="icon">
-                        <fa-badge wx:if="{{stateNum.state_send > 0}}"
+                        <fa-badge wx:if="{{stateNum.state_pay > 0}}"
                                   color="#fff"
                                   background-color="red"
                                   font-size="12"
-                        >{{stateNum.state_send}}
+                        >{{stateNum.state_pay}}
                         </fa-badge>
                         <image src="/themes/default/user/order/state_pay.png"
                                mode="aspectFit" />
                     </view>
-                    <text>待收货</text>
+                    <text>待发货</text>
                 </view>
                 <view class="item" data-state-type="state_success" bindtap="goOrderList">
                     <view class="icon">
@@ -97,16 +110,31 @@
 
         <fa-panel>
             <fa-cell-group>
+                <fa-cell title="优惠券" is-link="true" url="/pages/coupon/myList/index">
+                    <view slot="icon" class="cell-icon">
+                        <image src="/themes/default/user/coupon.png"
+                               mode="aspectFit" style="width:22px;height: 22px" />
+                    </view>
+                </fa-cell>
                 <fa-cell title="地址管理" is-link="true" url="/pages/user/address/list/index">
                     <view slot="icon" class="cell-icon">
                         <image src="/themes/default/user/address.png"
                                mode="aspectFit" style="width:22px;height: 22px" />
                     </view>
                 </fa-cell>
-                <fa-cell title="商品关注" is-link="true" url="/pages/collect/goods/index">
+                <fa-cell title="商品收藏" is-link="true" url="/pages/collect/goods/index">
                     <view slot="icon" class="cell-icon">
                         <image src="/themes/default/user/collect.png"
                                mode="aspectFit" style="width:22px;height: 22px" />
+                    </view>
+                </fa-cell>
+                <fa-cell title="我的赠品" is-link="true" url="/pages/user/gift/list/index">
+                    <view slot="icon" class="cell-icon">
+                        <image
+                                src="/themes/default/user/collect.png"
+                                mode="aspectFit"
+                                style="width:22px;height: 22px"
+                        />
                     </view>
                 </fa-cell>
             </fa-cell-group>
@@ -115,10 +143,4 @@
     <block wx:else>
         <unlogin-ucenter bind:login-success="onLoginSuccess" bind:login-fail="onLoginFail"></unlogin-ucenter>
     </block>
-    <view class="fashop-copyright">
-        <view class="body">
-            <image src="/themes/fashop/copyright.png" mode="aspectFit" ></image>
-            <text>提供技术支持</text>
-        </view>
-    </view>
 </view>

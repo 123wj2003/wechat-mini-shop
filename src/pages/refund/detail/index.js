@@ -1,6 +1,6 @@
 import fa from '@/utils/fa'
-import RefundModel from '@/models/refund'
-import "regenerator-runtime/runtime"
+import RefundModel from '@/model/refund'
+
 
 const Dialog = require('@/ui/dialog/dialog');
 

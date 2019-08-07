@@ -10,24 +10,32 @@
         <block wx:for="{{list}}" wx:key="key" wx:for-index="index" wx:for-item="item">
             <fa-panel>
                 <order-card>
-                    <order-card-header orderId="{{item.id}}" state="{{item.state}}"
-                                       sn="{{item.sn}}"></order-card-header>
-                    <order-card-goods orderId="{{item.id}}" goodsList="{{item.extend_order_goods}}"
-                                      bind:click="goDetail"></order-card-goods>
+                    <order-card-header
+                            orderId="{{item.id}}"
+                            state="{{item.state}}"
+                            sn="{{item.sn}}"
+                            activityText="{{item.marketing_activity_text}}"
+                            showPayBtn="{{!!item.if_pay}}"
+                    />
+                    <order-card-goods
+                            orderId="{{item.id}}"
+                            goodsList="{{item.extend_order_goods}}"
+                            bind:click="goDetail"
+                    />
                     <order-card-footer
                             orderInfo="{{item}}"
                             orderId="{{item.id}}"
                             goodsNumber="{{item.goods_num}}"
-                            totalCost="{{item.amount}}"
-                            showEvaluateBtn="{{item.if_evaluate}}"
-                            showPayBtn="{{item.if_pay}}"
-                            showReceiveBtn="{{item.if_receive}}"
-                            showLogisticsBtn="{{item.state===30||item.state===40}}"
+                            totalCost="{{item.totalCost}}"
+                            showEvaluateBtn="{{!!item.if_evaluate}}"
+                            showPayBtn="{{!!item.if_pay}}"
+                            showReceiveBtn="{{!!item.if_receive}}"
+                            showLogisticsBtn="{{item.showLogisticsBtn}}"
+                            showCancelBtn="{{!!item.if_cancel}}"
                             bind:pay="onPay"
                             bind:receive="onReceive"
                             bind:cancel="onCancel"
                             bind:evaluate="onEvaluate"
-                            bind:logistics="onLogistics"
                     ></order-card-footer>
                 </order-card>
             </fa-panel>

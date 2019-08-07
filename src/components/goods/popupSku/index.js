@@ -1,8 +1,11 @@
-import fa from "@/utils/fa";
-
+import Goods from "@/utils/goods";
 Component({
     externalClasses: ['mask-class', 'container-class'],
     properties: {
+        login: {
+            type: Boolean,
+            value: false
+        },
         show: {
             type: Boolean,
             value: false
@@ -27,10 +30,7 @@ Component({
             type: Object,
             value: null
         },
-        goodsSkuInfo: {
-            type: Object,
-            value: null
-        },
+
         priceSeparator: {
             type: String,
             value: ' - '
@@ -39,45 +39,42 @@ Component({
             type: Array,
             value: []
         },
-        specIdValueIdsChecked: {
-            type: Array,
-            value: []
-        }
+
     },
     data: {
-        prcie: null,
+        price: null,
         spec_list: [],
         prevGoodsId: null,
-        userInfo:null
+        userInfo: null,
+        goodsSkuInfo: null,
+        specIdValueIdsChecked:[]
     },
-    ready() {
-        let price = this.generatePice()
-        this.setData({
-            userInfo: fa.cache.get('user_info'),
-            price,
-        })
-        // 单商品主动模拟触发点击事件
-        if(this.data.goodsInfo.sku_list[0].spec_sign==='[0]'){
-            this.setData({
-                specIdValueIdsChecked:['0'] // 不设为string写会有bug 原因不详
-            },()=>{
-                this.onSpecClick({
-                    currentTarget:{
-                        dataset:{
-                            specValueId:0,
-                            specId:0
-                        }
-                    }
-                })
-            })
+    observers: {
+        'show': function (newVal, oldVal) {
+            if (newVal === true) {
+                let price = this.generatePice()
+                this.setData({ price })
+                // 单商品主动模拟触发点击事件
+                if (this.data.goodsInfo.skus[0].spec[0].id === 0) {
+                    this.setData({
+                        specIdValueIdsChecked: ['0'] // 不设为string写会有bug 原因不详
+                    }, () => {
+                        this.onSpecClick({
+                            currentTarget: {
+                                dataset: {
+                                    specValueId: 0,
+                                    specId: 0
+                                }
+                            }
+                        })
+                    })
+                }
+            }
         }
     },
     // 减少setData
     methods: {
         onLoginSuccess() {
-            this.setData({
-                userInfo: fa.cache.get('user_info')
-            })
         },
         onSpecClick(e) {
             const goodsInfo = this.data.goodsInfo
@@ -116,7 +113,6 @@ Component({
                     goodsSkuInfo: matchResult.goodsSkuInfo,
                     skuListIndex: matchResult.skuListIndex,
                     specIdValueIdsChecked: this.data.specIdValueIdsChecked,
-
                 })
             } else {
                 this.triggerEvent('goods-sku-match-fail', {
@@ -138,9 +134,9 @@ Component({
             let goodsSkuInfo = null
             let skuListIndex = null
             const spec_value_sign_string = JSON.stringify(spec_value_sign)
-            for (let i = 0; i < goodsInfo.sku_list.length; i++) {
-                if (goodsInfo.sku_list[i].spec_value_sign === spec_value_sign_string) {
-                    goodsSkuInfo = goodsInfo.sku_list[i]
+            for (let i = 0; i < goodsInfo.skus.length; i++) {
+                if (goodsInfo.skus[i].spec_value_sign === spec_value_sign_string) {
+                    goodsSkuInfo = goodsInfo.skus[i]
                     skuListIndex = i
                     break
                 }
@@ -172,10 +168,10 @@ Component({
         },
         generatePice: function () {
             const goodsInfo = this.data.goodsInfo
-            let price = goodsInfo.sku_list[0].price
+            let price = goodsInfo.skus[0].price
             // 如果是有规格商品
-            if (goodsInfo.sku_list.length > 1) {
-                let prices = goodsInfo.sku_list.map(function (item) {
+            if (goodsInfo.skus.length > 1) {
+                let prices = goodsInfo.skus.map(function (item) {
                     return item.price
                 })
                 // 如果是多条就区间
@@ -204,7 +200,7 @@ Component({
             this.triggerEvent('close')
         },
         onConfirmClick() {
-            if(this.data.userInfo!==null){
+            if (this.data.login) {
                 this.triggerEvent('confirm-click')
             }
         },

@@ -1,0 +1,7 @@
+<view style="overflow: hidden">
+    <view style=" display:flex;flex-direction: row; align-items: flex-end; justify-content: flex-start;height:{{fontSize+5}}px;overflow: hidden">
+        <text style=" color: {{fontColor}};  font-size:{{fontSize - 4}}px;  margin-right: 2;  font-weight:bold;padding-bottom: 1px">¥</text>
+        <text style="color:{{fontColor}}; font-size: {{fontSize}}px; font-weight: bold;">{{_price[0]}}</text>
+        <text style="color:{{fontColor}};font-size: {{fontSize-2}}px;font-weight: bold;">.{{_price[1]}}</text>
+    </view>
+</view>

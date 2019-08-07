@@ -1,0 +1,108 @@
+.item {
+    height: 84px;
+    margin: 0 5px;
+    background-color: #fff;
+    flex-direction: row;
+    overflow: hidden;
+    display: flex;
+}
+
+.left {
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.right {
+    flex: 2;
+    flex-direction: row;
+    display: flex;
+    border: 1px solid #ededed;
+}
+
+.rightLeft {
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.rightRight {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #DE1D22;
+}
+
+.title {
+    font-size: 14px;
+    display: block;
+    line-height: 14px;
+}
+
+.text {
+    font-size: 14px;
+    display: block;
+    line-height: 14px;
+}
+
+.tabview {
+    padding: 0 8px;
+
+}
+
+.tabviewText {
+    font-size: 11px;
+    line-height: 11px;
+    background-color: #f1f1f1;
+    padding: 2px 2px;
+    border-radius: 3px;
+    color: #999;
+}
+
+.times {
+}
+
+.times time-format,.times .time-format {
+    font-size: 12px;
+    margin-right: 5px;
+    color: #666;
+}
+
+.stateview {
+    width: 44px;
+    border-width: 0.5px;
+    border-color: #eaeaea;
+    border-style: dotted;
+    align-items: center;
+    justify-content: center;
+}
+
+.selectview {
+    width: 44px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.laceList {
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    left: -6.571428571428571px;
+    z-index: 10;
+}
+
+.laceItem {
+    width: 9.2px;
+    height: 9.2px;
+    border-radius: 4.6px;
+    background-color: #f8f8f8;
+    margin-bottom: 2px;
+}

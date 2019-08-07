@@ -1,9 +1,8 @@
-import "regenerator-runtime/runtime"
-import requestUtil from './utils/request'
-import exceptionUtil from './utils/exception'
-import Cache from './utils/cache'
-const host = 'https://demo.fashop.cn/'
-// const host = 'http://127.0.0.1:9510/'
+import requestUtil from '@/utils/request'
+import exceptionUtil from '@/utils/exception'
+import storage from "@/services/storage";
+
+const host = 'http://127.0.0.1:9510/'
 const api = {
     user: {
         login: {
@@ -55,7 +54,7 @@ const api = {
             method: 'POST'
         },
         unbindPhone: {
-            url: `${host}server/user/unbindWechat`,
+            url: `${host}server/user/unbindPhone`,
             method: 'POST'
         },
         evaluatedList: {
@@ -68,11 +67,11 @@ const api = {
             url: `${host}server/buy/calculate`,
             method: 'POST'
         },
-        create:{
+        create: {
             url: `${host}server/buy/create`,
             method: 'POST'
         },
-        pay:{
+        pay: {
             url: `${host}server/buy/pay`,
             method: 'POST'
         },
@@ -120,7 +119,7 @@ const api = {
             url: `${host}server/goodscategory/list`,
             method: 'GET'
         },
-        info:{
+        info: {
             url: `${host}server/goodscategory/info`,
             method: 'GET'
         }
@@ -240,16 +239,12 @@ const api = {
             url: `${host}server/order/cancel`,
             method: 'POST'
         },
-        confirmReceipt:{
+        confirmReceipt: {
             url: `${host}server/order/confirmReceipt`,
             method: 'POST'
         },
         deliverInfo: {
             url: `${host}server/order/deliverInfo`,
-            method: 'GET'
-        },
-        logistics: {
-            url: `${host}server/order/logistics`,
             method: 'GET'
         },
         goodsList: {
@@ -288,7 +283,7 @@ const api = {
         },
     },
     page: {
-        portal:{
+        portal: {
             url: `${host}server/page/portal`,
             method: 'GET'
         },
@@ -319,20 +314,32 @@ const api = {
             method: 'GET'
         },
     },
-    upload:{
-        addImage:{
+    upload: {
+        addImage: {
             url: `${host}server/upload/addImage`,
             method: 'POST'
         }
+    },
+    promote: {
+        inviteCustomer: {
+            url: `${host}server/promote/inviteCustomer`,
+            method: 'POST'
+        }
+    },
+    verifyCode: {
+        add: {
+            url: `${host}server/verifycode/add`,
+            method: 'POST'
+        },
     },
     host
 }
 const request = async function (api, options = {}) {
     const body = (typeof options.data !== 'undefined') ? options.data : {}
-    const cache = new Cache()
     let headers = (typeof options.header !== 'undefined') ? options.header : {}
-    const token = cache.get('user_token')
-    if (token !== null && typeof token.access_token !== 'undefined') {
+    const token = storage.getUserToken()
+
+    if (token) {
         headers = Object.assign(headers, {
             'Access-Token': token.access_token
         });
@@ -360,5 +367,6 @@ const request = async function (api, options = {}) {
 }
 export {
     api,
-    request
+    request,
+    host
 }

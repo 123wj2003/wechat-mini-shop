@@ -1,6 +1,5 @@
-import "regenerator-runtime/runtime"
-import PageModel from "@/models/page";
-import GoodsCategoryModel from "@/models/goodsCategory";
+import PageModel from "@/model/page";
+import GoodsCategoryModel from "@/model/goodsCategory";
 const categoryModel = new GoodsCategoryModel()
 const pageModel = new PageModel()
 Page({
@@ -91,11 +90,11 @@ Page({
                 if (getCurrentPages().length > 1) {
                     // 小程序对层级有限制
                     wx.redirectTo({
-                        url: `/pages/page/index?id=${link.param.id}`
+                        url: `/pages/page/detail/index?id=${link.param.id}`
                     })
                 } else {
                     wx.navigateTo({
-                        url: `/pages/page/index?id=${link.param.id}`
+                        url: `/pages/page/detail/index?id=${link.param.id}`
                     })
                 }
                 break

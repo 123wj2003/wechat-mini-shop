@@ -1,7 +1,7 @@
 import fa from '@/utils/fa'
-import AddressModel from '@/models/address'
-import AreaModel from '@/models/area'
-import "regenerator-runtime/runtime"
+import AddressModel from '@/model/address'
+import AreaModel from '@/model/area'
+
 
 const addressModel = new AddressModel()
 const areaModel = new AreaModel()
@@ -23,8 +23,7 @@ Page({
         areaList: [],
     },
     async onLoad({ id }) {
-        const areaCache = fa.cache.get('area_list_level2')
-        const areaResult = areaCache ? areaCache : await areaModel.list({ level: 2 })
+        const areaList = await areaModel.tree()
         const info = await addressModel.info({ id })
         this.setData({
             id,
@@ -35,7 +34,7 @@ Page({
             address: info.address,
             is_default: info.is_default,
             combine_detail: info.combine_detail,
-            areaList: areaResult.list,
+            areaList,
             onLoaded: true
         })
     },
@@ -134,7 +133,7 @@ Page({
             return fa.toast.show({ title: '请选择所在地区' })
         }
         if (!this.data.address) {
-            return fa.toast.show({ title: '请填写楼栋楼层或房间号信息' })
+            return fa.toast.show({ title: '请填写小区楼栋层或房间号信息' })
         }
         let data = {
             id: this.data.id,

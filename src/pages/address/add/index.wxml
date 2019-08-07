@@ -29,7 +29,7 @@
         <fa-field
                 title="详细地址："
                 value="{{address}}"
-                placeholder="填写楼栋楼层或房间号信息"
+                placeholder="填写小区楼栋层或房间号信息"
                 bind:change="onAddressChange"
         >
         </fa-field>

@@ -1,5 +1,5 @@
-import OrderModel from '@/models/order'
-import "regenerator-runtime/runtime"
+import OrderModel from '@/model/order'
+
 
 const orderModel = new OrderModel()
 Page({

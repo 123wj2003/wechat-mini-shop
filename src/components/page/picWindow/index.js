@@ -7,7 +7,7 @@ Component({
         }
     },
     methods: {
-        onClick(e) {
+        onPress(e) {
             this.triggerEvent('click', { index: e.currentTarget.dataset.index, dataSource: this.data.dataSource });
         }
     }

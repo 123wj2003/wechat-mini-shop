@@ -1,4 +1,11 @@
 <view class="order-fill">
+    <coupon-modal
+            id="coupon-modal"
+            cartIds="{{cartIds}}"
+            selectId="{{couponId}}"
+            bind:onChange="onCouponChange"
+            bind:onUsableTotalNumberChange="onUsableTotalNumberChange"
+    />
     <fa-panel>
         <block wx:if="{{addressId > 0}}">
             <view class="address">
@@ -9,7 +16,7 @@
                                 <text class="name">{{address.truename}}</text>
                                 <text class="phone">{{address.phone}}</text>
                             </view>
-                            <view class="address">{{address.combine_detail}}</view>
+                            <view class="address">{{address.combine_detail}} {{address.address}}</view>
                         </view>
                     </fa-cell>
                 </view>
@@ -31,20 +38,6 @@
 
     <fa-panel>
         <fa-cell-group>
-            <!--京东废弃了这种-->
-            <!--<fa-cell is-link>-->
-            <!--<view class="goods-list">-->
-            <!--<image src="https://ws3.sinaimg.cn/large/006tNc79ly1frlfuicj18j303c03cq2v.jpg"-->
-            <!--class="address-bottom-decoration"></image>-->
-            <!--<image src="https://ws3.sinaimg.cn/large/006tNc79ly1frlfuicj18j303c03cq2v.jpg"-->
-            <!--class="address-bottom-decoration"></image>-->
-            <!--<image src="https://ws3.sinaimg.cn/large/006tNc79ly1frlfuicj18j303c03cq2v.jpg"-->
-            <!--class="address-bottom-decoration"></image>-->
-            <!--<image src="https://ws3.sinaimg.cn/large/006tNc79ly1frlfuicj18j303c03cq2v.jpg"-->
-            <!--class="address-bottom-decoration"></image>-->
-            <!--</view>-->
-            <!--<text slot="footer">共8件</text>-->
-            <!--</fa-cell>-->
             <block wx:for="{{cartList}}" wx:key="key" wx:for-index="page-data" wx:for-item="item">
                 <fa-cell>
                     <view class="one-item">
@@ -64,6 +57,13 @@
                     </view>
                 </fa-cell>
             </block>
+            <fa-cell title="优惠券" wx:if="{{calculate}}" bindtap="onCouponPress">
+                <view slot="footer" class="coupon">
+                    <text wx:if="{{couponId>0}}">{{couponInfo.title}}</text>
+                    <text wx:if="{{couponId===0}}">{{usableTotalNumber}} 张可用</text>
+                    <image src="/themes/default/cart/order-fill-more.png" mode="aspectFill"></image>
+                </view>
+            </fa-cell>
             <fa-cell>
                 <view class="message">
                     <input placeholder="选填 有什么想对商家说的（45字以内）" placeholder-class="placeholder-class"
@@ -75,16 +75,19 @@
     </fa-panel>
     <fa-panel>
         <fa-cell-group>
-            <fa-cell title="运费" wx:if="{{calculate}}">
+            <fa-cell title="商品总额" wx:if="{{calculate}}">
                 <view slot="footer">
-                    <text class="freight-price">+ ¥{{calculate.pay_freight_fee}}
-                    </text>
-                    <!--<span class="freight-desc" wx:if="{{calculate.freight_template_fee}}">重量计费：0.5kg</span>-->
+                    <text class="freight-price">+ ¥{{calculate.goods_amount}}</text>
                 </view>
             </fa-cell>
-            <fa-cell title="小计">
+            <fa-cell title="运费" wx:if="{{calculate}}">
                 <view slot="footer">
-                    <span class="total-price">¥{{calculate?(calculate.goods_amount + calculate.pay_freight_fee):total}}</span>
+                    <text class="freight-price">+ ¥{{calculate.pay_freight_fee}}</text>
+                </view>
+            </fa-cell>
+            <fa-cell title="优惠券" wx:if="{{calculate.discount.coupon_amount}}">
+                <view slot="footer">
+                    <text class="freight-price">- ¥{{calculate.discount.coupon_amount}}</text>
                 </view>
             </fa-cell>
         </fa-cell-group>

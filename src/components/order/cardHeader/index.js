@@ -1,11 +1,11 @@
 Component({
     externalClasses: ['mask-class', 'container-class'],
     properties: {
-        orderInfo:{
-            type:Object,
-            value:null
+        orderInfo: {
+            type: Object,
+            value: null
         },
-        orderId:{
+        orderId: {
             type: String,
             value: null
         },
@@ -13,20 +13,29 @@ Component({
             type: Number,
             value: null
         },
-        sn:{
+        sn: {
             type: String,
             value: null
         },
+        activityText: {
+            type: String,
+            value: null
+        },
+        showPayBtn: {
+            type: Boolean,
+            value: false
+        }
     },
+
     methods: {
         onDelete() {
             this.triggerEvent('delete');
         },
         onClick(e) {
-            this.triggerEvent('click', { orderId: this.data.orderId});
+            this.triggerEvent('click', { orderId: this.data.orderId });
         },
-        onPay(){
-            this.triggerEvent('pay', { orderInfo: this.data.orderInfo});
+        onPay() {
+            this.triggerEvent('pay', { orderInfo: this.data.orderInfo });
         }
     }
 });

@@ -10,7 +10,7 @@
         <swiper class="goods-image-swiper" indicator-dots="true" autoplay="true" interval="5000" duration="500">
             <block wx:for="{{detail.images}}" wx:key="item">
                 <swiper-item>
-                    <image src="{{item}}" data-url="{{item}}" mode="aspectFill" bindtap="bannerPreview"/>
+                    <image src="{{item}}" data-url="{{item}}" mode="aspectFill" bindtap="bannerPreview" />
                 </swiper-item>
             </block>
         </swiper>
@@ -18,31 +18,33 @@
             <text class="title">{{detail.title}}</text>
             <view class="body">
                 <text class="price">¥ {{detail.price}}</text>
-                <button open-type="share" class="share-button"><image class="share" src="/themes/default/goods/share.png" mode="scaleToFill" /></button>
+                <button open-type="share" class="share-button">
+                    <image class="share" src="/themes/default/goods/share.png" mode="scaleToFill" />
+                </button>
 
             </view>
             <view class="goods-spec-etc">
                 <text>库存 {{detail.stock}}</text>
                 <text>销量 {{detail.sale_num}}</text>
-                <text>运费 {{detail.freight_fee}}</text>
+                <!--                <text>运费 {{detail.freight_fee}}</text>-->
             </view>
         </view>
     </fa-panel>
-    <fa-panel class="spacing" wx:if="{{detail.sku_list.length>1 || detail.pay_type === 2}}">
-        <fa-cell-group>
-            <fa-cell title="{{goodsSkuInfo.title}}" is-link="true" bindtap="toggleGoodsSkuSelect"
-                     wx:if="{{detail.sku_list.length>1}}">
-                <view slot="icon" class="cell-icon">
-                    <text>规格</text>
-                </view>
-            </fa-cell>
-            <fa-cell title="{{goodsSkuInfo.weight}} kg" wx:if="{{detail.pay_type === 2}}">
-                <view slot="icon" class="cell-icon">
-                    <text>重量</text>
-                </view>
-            </fa-cell>
-        </fa-cell-group>
-    </fa-panel>
+    <!--    <fa-panel class="spacing" wx:if="{{detail.sku_list.length>1 || detail.pay_type === 2}}">-->
+    <!--        <fa-cell-group>-->
+    <!--            <fa-cell title="{{goodsSkuInfo.title}}" is-link="true" bindtap="toggleGoodsSkuSelect"-->
+    <!--                     wx:if="{{detail.sku_list.length>1}}">-->
+    <!--                <view slot="icon" class="cell-icon">-->
+    <!--                    <text>规格</text>-->
+    <!--                </view>-->
+    <!--            </fa-cell>-->
+    <!--            <fa-cell title="{{goodsSkuInfo.weight}} kg" wx:if="{{detail.pay_type === 2}}">-->
+    <!--                <view slot="icon" class="cell-icon">-->
+    <!--                    <text>重量</text>-->
+    <!--                </view>-->
+    <!--            </fa-cell>-->
+    <!--        </fa-cell-group>-->
+    <!--    </fa-panel>-->
 
     <fa-panel class="spacing" wx:if="{{evaluateList.total_number>0}}">
         <view class="goods-evaluate-title">
@@ -65,6 +67,21 @@
         </view>
     </fa-panel>
 
+    <fa-panel class="spacing" wx:if="{{brandGoods.list.length>0}}">
+        <view class="goods-evaluate-title">
+            <fa-cell title=" " is-link="true" bind:tap="onBrandPress">
+                <view slot="icon" class="cell-icon">
+                    <image src="{{detail.brand.logo}}"/>
+                    <text>{{detail.brand.title}}</text>
+                </view>
+                <view slot="footer" class="cell-icon">
+                    <span>查看更多品牌商品</span>
+                </view>
+            </fa-cell>
+        </view>
+        <goods-brand list="{{brandGoods.list}}" />
+    </fa-panel>
+
     <fa-panel>
         <fa-cell title=" ">
             <view slot="icon" class="cell-icon">
@@ -72,7 +89,9 @@
             </view>
         </fa-cell>
         <view class="goods-detail-content">
-            <goods-body body="{{detail.body}}" bind:goods-click="onBodyGoodsClick" bind:image-click="bodyImagePreview"></goods-body>
+            <goods-body
+                    body="{{detail.body}}"
+            />
         </view>
     </fa-panel>
     <footer class="goods-footer">
@@ -86,21 +105,32 @@
             </button>
             <login-view class="sub" bind:success="onLoginSuccess">
                 <view class="icon" bindtap="onCollect">
-                    <image src="/themes/default/goods/collect.png"
-                           mode="aspectFill" />
+                    <image
+                            wx:if="{{is_collect === true}}"
+                            src="/themes/default/goods/collected.png"
+                            mode="aspectFill"
+                    />
+                    <image
+                            wx:if="{{is_collect !== true}}"
+                            src="/themes/default/goods/collect.png"
+                            mode="aspectFill"
+                    />
                 </view>
                 <text bindtap="onCollect">收藏</text>
             </login-view>
             <login-view class="sub" bind:success="onLoginSuccess" bindtap="goCart">
                 <view class="icon">
-                    <fa-badge wx:if="{{cartTotalNumber>0}}"
-                              color="#fff"
-                              background-color="red"
-                              font-size="12"
+                    <fa-badge
+                            wx:if="{{cartTotalNumber>0}}"
+                            color="#fff"
+                            background-color="red"
+                            font-size="12"
                     >{{cartTotalNumber > 99 ? '99+' : cartTotalNumber}}
                     </fa-badge>
-                    <image src="/themes/default/goods/cart.png"
-                           mode="aspectFill" />
+                    <image
+                            src="/themes/default/goods/cart.png"
+                            mode="aspectFill"
+                    />
                 </view>
                 <text>购物车</text>
             </login-view>
@@ -113,6 +143,7 @@
 </view>
 <goods-sku-popup
         wx:if="{{detail.id > 0}}"
+        login="{{login}}"
         show="{{showBottomPopup}}"
         goodsInfo="{{detail}}"
         inCartNumber="{{inCartNumber}}"

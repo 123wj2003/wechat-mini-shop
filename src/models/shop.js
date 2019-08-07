@@ -1,16 +1,27 @@
-import "regenerator-runtime/runtime"
-import { api, request } from '../api';
-import Model from '../utils/model'
-import { ShopInfoInterface } from '../interface/shop'
+import shop from "@/services/shop";
 
-export default class Shop extends Model {
-    async info(params) {
-        try {
-            const { result } = await request(api.shop.info, { data: params })
-            return result
-        } catch (e) {
-            this.setException(e)
-            return false
+export default {
+    namespace: "shop",
+    state: {
+        info: { result: { info: {} } }
+    },
+
+    effects: {
+        * info({ payload, callback }, { call, put }) {
+            const response = yield call(shop.info, payload);
+            yield put({
+                type: "_info",
+                payload: response
+            });
+            if (callback) callback(response);
+        }
+    },
+    reducers: {
+        _info(state, action) {
+            return {
+                ...state,
+                info: action.payload
+            };
         }
     }
-}
+};

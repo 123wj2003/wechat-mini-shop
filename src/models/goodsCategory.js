@@ -1,25 +1,46 @@
-import "regenerator-runtime/runtime"
-import { api, request } from '../api';
-import Model from '../utils/model'
-import { GoodsCategoryListInterface } from '../interface/goodsCategory'
+import goodsCategory from "@/services/goodsCategory";
 
-export default class GoodsCategory extends Model {
-    async list(params) {
-        try {
-            const { result } = await request(api.goodsCategory.list, { data: params })
-            return new GoodsCategoryListInterface(result)
-        } catch (e) {
-            this.setException(e)
-            return false
+export default {
+    namespace: "goodsCategory",
+    state: {
+        list: {
+            result: { list: [], total_number: 0 }
+        },
+        info: {
+            result: { info: {} }
+        },
+    },
+
+    effects: {
+        * list({ payload, callback }, { call, put }) {
+            const response = yield call(goodsCategory.list, payload);
+            yield put({
+                type: "_list",
+                payload: response
+            });
+            if (callback) callback(response);
+        },
+        * info({ payload, callback }, { call, put }) {
+            const response = yield call(goodsCategory.info, payload);
+            yield put({
+                type: "_info",
+                payload: response
+            });
+            if (callback) callback(response);
+        }
+    },
+    reducers: {
+        _list(state, action) {
+            return {
+                ...state,
+                list: action.payload
+            };
+        },
+        _info(state, action) {
+            return {
+                ...state,
+                info: action.payload
+            };
         }
     }
-    async info(params) {
-        try {
-            const { result } = await request(api.goodsCategory.info, { data: params })
-            return result.info
-        } catch (e) {
-            this.setException(e)
-            return false
-        }
-    }
-}
+};

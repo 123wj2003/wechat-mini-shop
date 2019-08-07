@@ -1,0 +1,9 @@
+<block wx:for="{{data.data}}" wx:key="item" wx:for-index="index">
+    <coupon-item
+            item="{{item}}"
+            login="{{login}}"
+            getedIds="{{getedIds}}"
+            bind:onPress="onPress"
+            data-index="{{index}}"
+    />
+</block>

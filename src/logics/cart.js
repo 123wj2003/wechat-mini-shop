@@ -1,6 +1,5 @@
-import CartModel from '@/models/cart'
-import fa from '../utils/fa'
-import "regenerator-runtime/runtime"
+import CartModel from '@/model/cart'
+
 
 export default class Cart {
     cartModel = new CartModel()

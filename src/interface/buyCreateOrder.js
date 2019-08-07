@@ -1,12 +1,11 @@
-import Interface from "../utils/interface";
-import Exception from "../utils/exception";
+import Interface from "@/utils/interface";
+import Exception from "@/utils/exception";
 
 export class BuyCreateOrderInterface extends Interface {
     order_id;
     pay_sn;
 
     constructor(param) {
-        console.log(param)
         super()
         try {
             this.order_id = param.order_id

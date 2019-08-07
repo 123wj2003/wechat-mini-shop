@@ -1,13 +1,55 @@
-<view class="page-container">
-    <view class="page">
-        <view class="form">
-            <view class="username input-item">
-                <label>+86</label>
-                <input placeholder="手机号" type="number" auto-focus />
-            </view>
-            <view class="btn-area">
-                <fa-button type="danger">下一步</fa-button>
-            </view>
-        </view>
-    </view>
+<view class="user-setting-bind-phone">
+    <fa-panel>
+        <fa-cell-group>
+            <fa-cell title="手机号">
+                <input
+                        slot="footer"
+                        maxlength="11"
+                        placeholder="请输入手机号"
+                        type="number"
+                        bindinput="onPhoneChange"
+                        value="{{phone}}"
+                />
+            </fa-cell>
+            <fa-cell title="验证码">
+                <view slot="footer" class="smscode">
+                    <input
+                            maxlength="11"
+                            placeholder="请输入验证码"
+                            type="number"
+                            bindinput="onVerifyCodeChange"
+                            value="{{verify_code}}"
+                    />
+                    <fa-button size="small">
+                        <smsCode
+                                disabled="{{sendSuccess=== false || !phone || phone.length !== 11 }}"
+                                seconds="59"
+                                bind:onPress="onPress"
+                                bind:onStart="onStart"
+                                bind:onEnd="onEnd"
+                        />
+                    </fa-button>
+                </view>
+            </fa-cell>
+            <fa-cell title="密码">
+                <input
+                        style="width:200px"
+                        slot="footer"
+                        placeholder="设置密码(必须包含数字和字母)"
+                        bindinput="onPasswordChange"
+                        value="{{password}}"
+                        type="password"
+                />
+            </fa-cell>
+        </fa-cell-group>
+    </fa-panel>
 </view>
+<fixed-bottom>
+    <fa-button
+            size="large"
+            type="danger"
+            bind:btnclick="onSubmit"
+            disabled="{{submitLoading=== true || !phone || phone.length !== 11 || !verify_code || !password || password.length < 6}}">
+        找回密码
+    </fa-button>
+</fixed-bottom>
