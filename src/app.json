@@ -4,7 +4,6 @@
     "pages/page/detail/index",
     "pages/categoryPage/detail/index",
     "pages/search/result/index",
-    "pages/pointsMall/index",
     "pages/brand/detail/index",
     "pages/goods/detail/index",
     "pages/user/gift/list/index",
@@ -66,12 +65,6 @@
         "iconPath": "themes/default/tabbar/home.png",
         "selectedIconPath": "themes/default/tabbar/home-a.png",
         "text": "首页"
-      },
-      {
-        "pagePath": "pages/pointsMall/index",
-        "iconPath": "themes/default/tabbar/points.png",
-        "selectedIconPath": "themes/default/tabbar/points-a.png",
-        "text": "积分商城"
       },
       {
         "pagePath": "pages/cart/index",
